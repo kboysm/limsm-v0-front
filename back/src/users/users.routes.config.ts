@@ -19,7 +19,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             })
         
         this.app.route('./users/:userId')
-            .all( (req: express.Request, res: express.Response, next: express.NextFunction) => {
+            .all( (req: express.Request, res: express.Response, next: express.NextFunction) => {//미들웨어 유저 인증 용도
                 next();
             })
             .get( (req: express.Request, res: express.Response) => {
