@@ -10,6 +10,7 @@ import  cors from 'cors'
 import { CommonRoutesConfig } from './common/common.routes.config';
 import { UsersRoutes } from './users/users.routes.config';
 import debug from 'debug'
+import  testUserList  from './testData/index'
 // import   mysqlConnection  from './db'
 
 
@@ -72,20 +73,18 @@ createConnection().then(async connection => {
     const users = await connection.manager.find(Users);
     const adminSearch = users.map( item => item.name );
 
-    if (!adminSearch.includes('관리자')) {
-        const user = new Users();
-        user.name = "관리자";
-        user.age = 29;
-        user.address = "서울특별시 성동구 성수동";
-        user.createdAt = new Date();
-        user.updatedAt = new Date();
-        user.id = 'admin';
-        user.pw = '1234';
-        await connection.manager.save(user);
-        console.log("프로젝트 스타트 관리자 아이디 생성 :  ", user);
-    } else {
-        console.log( "관리자 존재 , 프로젝트 스타트" )
-    }
+    // if (!adminSearch.includes('관리자')) {
+        
+    //     await connection.manager.save(user);
+    //     console.log("프로젝트 스타트 관리자 아이디 생성 :  ", user);
+    // } else {
+    //     console.log( "관리자 존재 , 프로젝트 스타트" )
+    // }
+    testUserList.forEach( async item => {
+        if(!adminSearch.includes(item.name)){
+            await connection.manager.save(item);
+        }
+    })
     // console.log("Loaded users: ", users);
     
     // console.log("Here you can setup and run express/koa/any other framework.");
