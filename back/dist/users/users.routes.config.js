@@ -50,3 +50,4 @@ var UsersRoutes = /** @class */ (function (_super) {
     return UsersRoutes;
 }(common_routes_config_1.CommonRoutesConfig));
 exports.UsersRoutes = UsersRoutes;
+//# sourceMappingURL=users.routes.config.js.map

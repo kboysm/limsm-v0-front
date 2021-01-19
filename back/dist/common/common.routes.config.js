@@ -13,3 +13,4 @@ var CommonRoutesConfig = /** @class */ (function () {
     return CommonRoutesConfig;
 }());
 exports.CommonRoutesConfig = CommonRoutesConfig;
+//# sourceMappingURL=common.routes.config.js.map
