@@ -30,6 +30,7 @@ var expressWinston = __importStar(require("express-winston"));
 var cors_1 = __importDefault(require("cors"));
 var users_routes_config_1 = require("./users/users.routes.config");
 var debug_1 = __importDefault(require("debug"));
+var db_1 = __importDefault(require("./db"));
 var app = express_1.default();
 var server = http.createServer(app);
 var port = 3000;
@@ -52,6 +53,11 @@ app.use(expressWinston.errorLogger({
 }));
 app.get('/', function (req, res) {
     res.status(200).send('Server Up');
+});
+db_1.default.query('SELECT * from testTable', function (error, rows, fields) {
+    if (error)
+        throw error;
+    console.log('mysql test rows: ', rows);
 });
 server.listen(port, function () {
     debugLog("Server running at http://localhost:" + port);
