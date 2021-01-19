@@ -1,4 +1,4 @@
-import mysql from 'mysql'
+import * as mysql from 'mysql'
 
 const mysqlConnection: mysql.Connection = mysql.createConnection({
     host : 'localhost',
