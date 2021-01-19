@@ -7,7 +7,7 @@ import cors from 'cors'
 import { CommonRoutesConfig } from './common/common.routes.config';
 import { UsersRoutes } from './users/users.routes.config';
 import debug from 'debug'
-
+import mysql from 'mysql'
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -42,6 +42,15 @@ app.use(expressWinston.errorLogger({
 app.get('/', (req: express.Request , res: express.Response) => {
     res.status(200).send('Server Up');
 })
+
+const mysqlConnection: mysql.Connection = mysql.createConnection({
+    host : 'localhost',
+    user : 'admin',
+    password : '1234'
+})
+
+mysqlConnection.connect();
+
 
 server.listen(port, ()=>{
     debugLog(`Server running at http://localhost:${port}`);
