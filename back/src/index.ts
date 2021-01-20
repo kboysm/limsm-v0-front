@@ -1,6 +1,4 @@
 import "reflect-metadata";
-import { createConnection } from "typeorm";
-import { Users } from "./entity/User";
 import express from 'express'
 import * as http from 'http';
 import * as bodyparser from 'body-parser'
@@ -10,9 +8,10 @@ import  cors from 'cors'
 import { CommonRoutesConfig } from './common/common.routes.config';
 import { UsersRoutes } from './users/users.routes.config';
 import debug from 'debug'
-import  testUserList  from './testData/index'
+import { myConnection } from './connection/index'
 // import   mysqlConnection  from './db'
-
+import { Users } from "./entity/User";
+import  testUserList  from './testData/index'
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -48,11 +47,18 @@ app.get('/', (req: express.Request , res: express.Response) => {
     res.status(200).send('Server Up');
 })
 
+myConnection.then( async connection => {
+    console.log("typeorm mysql start");
+    const users = await connection.manager.find(Users);
+    const adminSearch = users.map( item => item.name );
+    testUserList.forEach( async item => {
+        if(!adminSearch.includes(item.name)){
+            await connection.manager.save(item);
+        }
+    })
+    console.log("typeorm mysql end");
 
-// mysqlConnection.query('SELECT * from testTable', (error, rows , fields) => {
-//     if (error) throw error;
-//     console.log('mysql test rows: ', rows);
-//   });
+}).catch(error => console.log(error));
 
 server.listen(port, ()=>{
     debugLog(`Server running at http://localhost:${port}`);
@@ -61,32 +67,16 @@ server.listen(port, ()=>{
     })
 })
 
+// createConnection().then( async connection => {
 
-createConnection().then(async connection => {
+//     console.log("typeorm mysql start");
+//     const users = await connection.manager.find(Users);
+//     const adminSearch = users.map( item => item.name );
+//     testUserList.forEach( async item => {
+//         if(!adminSearch.includes(item.name)){
+//             await connection.manager.save(item);
+//         }
+//     })
+//     console.log("typeorm mysql end");
 
-    console.log("Inserting a new user into the database...");
-    
-    // 
-    // console.log("Saved a new user with id: " + user.id);
-
-    // console.log("Loading users from the database...");
-    const users = await connection.manager.find(Users);
-    const adminSearch = users.map( item => item.name );
-
-    // if (!adminSearch.includes('관리자')) {
-        
-    //     await connection.manager.save(user);
-    //     console.log("프로젝트 스타트 관리자 아이디 생성 :  ", user);
-    // } else {
-    //     console.log( "관리자 존재 , 프로젝트 스타트" )
-    // }
-    testUserList.forEach( async item => {
-        if(!adminSearch.includes(item.name)){
-            await connection.manager.save(item);
-        }
-    })
-    // console.log("Loaded users: ", users);
-    
-    // console.log("Here you can setup and run express/koa/any other framework.");
-
-}).catch(error => console.log(error));
+// }).catch(error => console.log(error));

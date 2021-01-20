@@ -1,16 +1,16 @@
 import { Users } from "../entity/User";
 
-const userNameList = ['admin','user1','user2','user3'];
-const userAgeList = [29,20,21,22]
-const userAddressList = [
+const userNameList: Array<string> = ['admin','user1','user2','user3'];
+const userAgeList: Array<number> = [29,20,21,22]
+const userAddressList: Array<string> = [
     '서울특별시 성동구','서울특별시 강남구','서울특별시 도봉구','서울특별시 노원구'
 ]
-const userIdList = ['admin','test1','test2','test3']
-const userPwList = ['1234','1234','1234','1234']
+const userIdList: Array<string> = ['admin','test1','test2','test3']
+const userPwList: Array<string> = ['1234','1234','1234','1234']
 const userList: Array<Users> = []
 
-for(let i=0 ; i <3 ; i++){
-    const user = new Users();
+for(let i=0 ; i <4 ; i++){
+    const user: Users = new Users();
     user.name = userNameList[i];
     user.age = userAgeList[i];
     user.address = userAddressList[i];
