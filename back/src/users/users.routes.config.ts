@@ -1,5 +1,4 @@
 import { CommonRoutesConfig } from '../common/common.routes.config';
-import {  getConnection } from "typeorm";
 import { Users } from "../entity/User";
 import { myConnection } from '../connection/index'
 import * as express from 'express'
@@ -9,7 +8,6 @@ export class UsersRoutes extends CommonRoutesConfig {
         super( app , 'UsersRoutes' );
     }
     configureRoutes() {
-        
         this.app.route('/users')
             .get( (req: express.Request, res: express.Response) => {
                 myConnection.then( async connection => {
