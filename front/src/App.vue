@@ -1,112 +1,99 @@
 <template>
-  <v-app>
-    <v-card color="basil" height="90%">
-    <v-card-title class="text-center justify-center py-6">
-      <h1 class="font-weight-bold display-3 basil--text">
-        Limsm - portfolio
-      </h1>
-    </v-card-title>
-      <hr>
-
-    <v-tabs
-      v-model="tab"
-      background-color="transparent"
-      color="basil"
-      grow
-    >
-      <v-tab
-        v-for="item in items"
-        :key="item"
-        @click="testmethod(item)"
-      >
-        {{ item }}
-      </v-tab>
-    </v-tabs>
-
-    <v-tabs-items v-model="tab">
-      <v-tab-item
-        v-for="item in items"
-        :key="item"
-      >
-        <v-card
-          color="basil"
-          flat
-        >
-          <v-card-text>{{ text }}</v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
-  </v-card>
-
-  <v-footer
-    dark
-    padless
-    height="10%"
-  >
-    <v-card
+  <v-app id="inspire">
+    <v-app-bar
+      app
+      color="white"
       flat
-      tile
-      class="indigo lighten-1 white--text text-center"
-      width="100%"
     >
-      <v-card-text>
+      <v-container class="py-0 fill-height">
+        <v-avatar
+          class="mr-10"
+          color="grey darken-1"
+          size="32"
+        ></v-avatar>
+
         <v-btn
-          v-for="icon in icons"
-          :key="icon"
-          class="mx-4 white--text"
-          icon
+          v-for="link in links"
+          :key="link"
+          text
         >
-          <v-icon size="24px">
-            {{ icon }}
-          </v-icon>
+          {{ link }}
         </v-btn>
-      </v-card-text>
 
-      <v-card-text class="white--text pt-0">
-      {{testComputed}}
-      </v-card-text>
+        <v-spacer></v-spacer>
 
-      <v-divider></v-divider>
+        <v-responsive max-width="260">
+          <v-text-field
+            dense
+            flat
+            hide-details
+            rounded
+            solo-inverted
+          ></v-text-field>
+        </v-responsive>
+      </v-container>
+    </v-app-bar>
 
-      <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>Vuetify를 이용한 frontend 포트폴리오</strong>
-      </v-card-text>
-    </v-card>
-  </v-footer>
+    <v-main class="grey lighten-3">
+      <v-container>
+        <v-row>
+          <v-col cols="2">
+            <v-sheet rounded="lg">
+              <v-list color="transparent">
+                <v-list-item
+                  v-for="n in 5"
+                  :key="n"
+                  link
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      List Item {{ n }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
 
+                <v-divider class="my-2"></v-divider>
+
+                <v-list-item
+                  link
+                  color="grey lighten-4"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      Refresh
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-sheet>
+          </v-col>
+
+          <v-col>
+            <v-sheet
+              min-height="70vh"
+              rounded="lg"
+            >
+              <!--  -->
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
   </v-app>
 </template>
-
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
   @Component
   export default class App extends Vue {
-    tab= null
-    items= [
-          '로그인', '회원가입', 'Deserts', 'Cocktails'
-        ]
-    text= 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    icons= [
-        'mdi-facebook',
-        'mdi-twitter',
-        'mdi-linkedin',
-        'mdi-instagram',
+    links= [
+        'Dashboard',
+        'Messages',
+        'Profile',
+        'Updates',
       ]
-    testData = 'lsm'
-    get testComputed(): string {
-      return 'test time' + this.testData;
-    }
-    testmethod(item:string) {
-      this.testData = item
-    }
   }
 </script>
 <style lang="scss" scoped>
-.basil {
-  background-color: #FFFBE6 !important;
-}
-.basil--text {
-  color: #356859 !important;
-}
+
 </style>
