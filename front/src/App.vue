@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <nav-bar />
-    <v-content>
+    <v-main>
       <router-view></router-view>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 <script lang="ts">
@@ -15,12 +15,7 @@ import NavBar from '@/components/NavBar.vue'
     }
   })
   export default class App extends Vue {
-    links= [
-        'Dashboard',
-        'Messages',
-        'Profile',
-        'Updates',
-      ]
+
   }
 </script>
 <style lang="scss" scoped>

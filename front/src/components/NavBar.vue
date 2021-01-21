@@ -1,14 +1,14 @@
 <template>
     <nav>
         <v-app-bar color="white" dark app class="line">
-            <vtoolbar-title class="text-uppercase red--text">
+            <v-toolbar-title class="text-uppercase red--text">
                 <span class="font-weight-light">
                     Cloud
                 </span>
                 <span>
                     Invertory
                 </span>
-            </vtoolbar-title>
+            </v-toolbar-title>
             <template>
                 <v-btn color="red" dark small absolute bottom right fab>
                     <v-icon>mdi-plus</v-icon>
@@ -21,27 +21,27 @@
                     <v-icon>fas fa-cloud-download-alt</v-icon>
                 </v-list-item>
                 <v-list-item router to="/">
-                    <v-list-action>
+                    <v-list-item-action>
                         <v-icon>fas fa-desktop</v-icon>
-                    </v-list-action>
+                    </v-list-item-action>
                 </v-list-item>
                 <v-list-item router to="/">
-                    <v-list-action>
+                    <v-list-item-action>
                         <v-badge color="yellow">
                             <template v-slot:badge>1</template>
                             <v-icon>fas fa-shopping-cart</v-icon>
                         </v-badge>
-                    </v-list-action>
+                    </v-list-item-action>
                 </v-list-item>
                 <v-list-item router to="/">
-                    <v-list-action>
+                    <v-list-item-action>
                             <v-icon>fas fa-city</v-icon>
-                    </v-list-action>
+                    </v-list-item-action>
                 </v-list-item>
                 <v-list-item router to="/">
-                    <v-list-action>
+                    <v-list-item-action>
                             <v-icon>fas fa-cog</v-icon>
-                    </v-list-action>
+                    </v-list-item-action>
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
