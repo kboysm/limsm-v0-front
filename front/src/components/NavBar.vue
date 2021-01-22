@@ -35,12 +35,17 @@
                 </v-list-item>
                 <v-list-item router to="/SignIn">
                     <v-list-item-action>
-                            <v-icon>fas fa-city</v-icon>
+                            <v-icon>fas fa-sign-in-alt</v-icon>
                     </v-list-item-action>
                 </v-list-item>
                 <v-list-item router to="/">
                     <v-list-item-action>
-                            <v-icon>fas fa-cog</v-icon>
+                            <v-icon>fas fa-user</v-icon>
+                    </v-list-item-action>
+                </v-list-item>
+                <v-list-item router to="/board">
+                    <v-list-item-action>
+                            <v-icon>fas fa-question</v-icon>
                     </v-list-item-action>
                 </v-list-item>
             </v-list>
