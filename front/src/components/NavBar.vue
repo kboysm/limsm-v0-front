@@ -25,7 +25,7 @@
                         <v-icon>fas fa-desktop</v-icon>
                     </v-list-item-action>
                 </v-list-item>
-                <v-list-item router to="/">
+                <v-list-item router to="/shopingCart">
                     <v-list-item-action>
                         <v-badge color="yellow">
                             <template v-slot:badge>1</template>
