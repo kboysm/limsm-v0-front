@@ -1,12 +1,8 @@
 <template>
-     <v-col cols="12" md="3" xs="12" class="mb-4">
           <v-hover v-slot:default="{ hover }">
             <v-card max-width="250" max-height="250" align="center">
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn icon>
-                  <v-icon>edit</v-icon>
-                </v-btn>
               </v-card-actions>
               <v-img src="01.jpg" width="150" height="150"></v-img>
               <v-card-text class="red--text">Ari Max Hyper Agressor</v-card-text>
@@ -15,12 +11,8 @@
                   <v-btn outlined="" color="white">detail</v-btn>
                 </div>
               </v-expand-transition>
-              <v-btn absolute="" color="red" class="white--text" fab large left top>
-                <h1>1</h1>
-              </v-btn>
             </v-card>
           </v-hover>
-        </v-col>
 </template>
 
 <script lang="ts">

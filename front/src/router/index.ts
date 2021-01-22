@@ -32,6 +32,11 @@ const routes: Array<RouteConfig> = [
     path: '/shopingCart',
     name: 'ShopingCart',
     component: () => import(/* webpackChunkName: "about" */ '../views/ShopingCart.vue')
+  },
+  {
+    path: '/myPage',
+    name: 'mypage',
+    component: () => import(/* webpackChunkName: "about" */ '../views/MyPage.vue')
   }
 ]
 

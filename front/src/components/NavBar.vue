@@ -38,7 +38,7 @@
                             <v-icon>fas fa-sign-in-alt</v-icon>
                     </v-list-item-action>
                 </v-list-item>
-                <v-list-item router to="/">
+                <v-list-item router to="/mypage">
                     <v-list-item-action>
                             <v-icon>fas fa-user</v-icon>
                     </v-list-item-action>

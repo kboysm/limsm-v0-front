@@ -8,8 +8,8 @@
                                     <v-row>
                                         <v-col cols="12" md="8">
                                             <v-card-text>
-                                                <h1 class="text-center display-2 red--text text-accent-3">Sign In</h1>
-                                                <div class="text-center" mt-4>
+                                                <h1 class="text-center display-2 red--text text--accent-3">Sign In</h1>
+                                                <div class="text-center mt-4">
                                                     <v-btn class="mx-2" fab color="red" outlined>
                                                         <v-icon>fab fa-facebook</v-icon>
                                                     </v-btn>
@@ -20,7 +20,7 @@
                                                         <v-icon>fab fa-linkedin-in</v-icon>
                                                     </v-btn>
                                                 </div>
-                                                <h4 class="text-center mlt-4">your email</h4>
+                                                <h4 class="text-center mt-4">your email</h4>
                                                 <v-form>
                                                     <v-text-field label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
                                                     <v-text-field id="password" label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
