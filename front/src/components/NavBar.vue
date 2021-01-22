@@ -33,7 +33,7 @@
                         </v-badge>
                     </v-list-item-action>
                 </v-list-item>
-                <v-list-item router to="/">
+                <v-list-item router to="/SignIn">
                     <v-list-item-action>
                             <v-icon>fas fa-city</v-icon>
                     </v-list-item-action>
