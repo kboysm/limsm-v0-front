@@ -12,6 +12,12 @@ import NavBar from '@/components/NavBar.vue'
   @Component({
     components: {
       NavBar
+    },
+    created() {
+      this.$axios("/users")
+      .then( r => {
+        console.log(r.data)
+      })
     }
   })
   export default class App extends Vue {
