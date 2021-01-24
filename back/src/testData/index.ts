@@ -16,8 +16,8 @@ for(let i=0 ; i <4 ; i++){
     user.address = userAddressList[i];
     user.createdAt = new Date();
     user.updatedAt = new Date();
-    user.id = userIdList[i];
-    user.pw = userPwList[i];
+    user.email = userIdList[i]+'@asd.asd';
+    user.password = userPwList[i];
     userList.push(user);
 }
 

@@ -47,9 +47,9 @@
                                 </v-list-item-subtitle>
                             </v-list-item-content>
                             </v-list-item>
-                            <v-list-actions>
+                            <v-list-item-action>
                                 <v-btn class="white--text" color="red" outlined>상품 주문</v-btn>
-                            </v-list-actions>
+                            </v-list-item-action>
                         </v-card>
                 </v-col>
             </v-row>

@@ -69,13 +69,13 @@
                                                 </div>
                                                 <h4 class="text-center mt-4">Ensure your email for registration</h4>
                                                 <v-form>
-                                                    <v-text-field label="Name" name="Name" prepend-icon="person" type="text" color="red accent-3"></v-text-field>
-                                                    <v-text-field label="Email" name="Email" prepend-icon="email" type="text" color="red accent-3"></v-text-field>
-                                                    <v-text-field label="Password" name="Password" prepend-icon="lock" type="password" color="red accent-3"></v-text-field>
+                                                    <v-text-field v-model="signUpObj.name" label="Name" name="Name" prepend-icon="person" type="text" color="red accent-3"></v-text-field>
+                                                    <v-text-field v-model="signUpObj.email" label="Email" name="Email" prepend-icon="email" type="text" color="red accent-3"></v-text-field>
+                                                    <v-text-field v-model="signUpObj.password" label="Password" name="Password" prepend-icon="lock" type="password" color="red accent-3"></v-text-field>
                                                 </v-form>
                                             </v-card-text>
                                             <div class="text-center mt-n5">
-                                                <v-btn rounded color="red accent-3 mb-1" dark>Sign Up</v-btn>
+                                                <v-btn rounded color="red accent-3 mb-1" dark @click="signUp">Sign Up</v-btn>
                                             </div>
                                         </v-col>
                                     </v-row>
@@ -89,10 +89,29 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-
+    import {AxiosRequestConfig} from 'axios'
+    
     @Component
     export default class  extends Vue {
         step=1
+        signInObj= {
+            id: '',
+            password: '',
+        }
+
+        signUpObj= {
+            id: '',
+            password: '',
+            name: '',
+        }
+
+        signUp() {
+            this.$axios.post("/signUp" , this.signUpObj)
+            .then( r => {
+                console.log(r.data)
+            })
+        }
+
     }
 </script>
 

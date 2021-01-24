@@ -2,6 +2,9 @@ import { CommonRoutesConfig } from '../common/common.routes.config';
 import { Users } from "../entity/User";
 import { myConnection } from '../connection/index'
 import * as express from 'express'
+import {getConnection} from 'typeorm'
+import crypto from 'crypto'
+
 
 export class UsersRoutes extends CommonRoutesConfig {
     constructor(app: express.Application ) {
@@ -22,9 +25,43 @@ export class UsersRoutes extends CommonRoutesConfig {
         
         this.app.route('/users')
             .post( (req: express.Request, res: express.Response) => {
-                res.status(200).send( 'List Of Users') //DB 생성 후 유저 추가 로직
+                res.status(200).send( `List Of Users `) //DB 생성 후 유저 추가 로직
             })
         
+        this.app.route('/signUp')
+            .post( (req: express.Request, res: express.Response) => {
+                const { email , password , name } = req.body
+                console.log( email , password , name );
+                if( email && password && name ) {
+                    const newUser = new Users();
+                        newUser.email= email
+                        newUser.password= crypto.scryptSync(password,'lsm',64, { N: 1024 }).toString('hex')
+                        newUser.name= name
+                        newUser.age= 0
+                        newUser.address= ''
+                        newUser.createdAt = new Date()
+                        newUser.updatedAt = new Date()
+                        myConnection.then( async connection => {
+                            console.log("signUp");
+                            const user = await connection.getRepository(Users).createQueryBuilder("user").where("user.email = :email", { email: newUser.email }).getOne();
+                            console.log( user)
+                            if(user){
+                                res.status(200).send('이미 존재하는 id')
+                            }else {
+                                await getConnection().createQueryBuilder().insert().into(Users).values(
+                                    newUser
+                                ).execute();
+                                res.status(200).send('회원가입 완료')
+                            }
+                            // res.status(200).send(user)
+                        }).catch(error =>{
+                            res.status(400).send( '회원가입 실패' ) //DB 생성 후 유저 추가 로직
+                        });
+
+                }
+                // res.status(200).send( `List Of Users `) //DB 생성 후 유저 추가 로직
+            })
+
         this.app.route('./users/:userId')
             .all( (req: express.Request, res: express.Response, next: express.NextFunction) => {//미들웨어 유저 인증 용도
                 next();
@@ -32,12 +69,15 @@ export class UsersRoutes extends CommonRoutesConfig {
             .get( (req: express.Request, res: express.Response) => {
                 res.status(200).send(`GET requested for id ${req.params.userId}`);
             })
-            .put( (req: express.Request, res: express.Response) => {
-                res.status(200).send(`PUT requested for id ${req.params.userId}`);
+            .post( (req: express.Request, res: express.Response) => {
+                res.status(200).send(`Post requested for id ${req.params}`);
             })
-            .patch( (req: express.Request, res: express.Response) => {
-                res.status(200).send(`PATCH requested for id ${req.params.userId}`);
-            })
+            // .put( (req: express.Request, res: express.Response) => {
+            //     res.status(200).send(`PUT requested for id ${req.params.userId}`);
+            // })
+            // .patch( (req: express.Request, res: express.Response) => {
+            //     res.status(200).send(`PATCH requested for id ${req.params.userId}`);
+            // })
             .delete( (req: express.Request, res: express.Response) => {
                 res.status(200).send(`DELETE requested for id ${req.params.userId}`);
             })
