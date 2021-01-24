@@ -1,29 +1,9 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -57,10 +37,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-var typeorm_1 = require("typeorm");
-var User_1 = require("./entity/User");
 var express_1 = __importDefault(require("express"));
 var http = __importStar(require("http"));
 var bodyparser = __importStar(require("body-parser"));
@@ -69,7 +55,10 @@ var expressWinston = __importStar(require("express-winston"));
 var cors_1 = __importDefault(require("cors"));
 var users_routes_config_1 = require("./users/users.routes.config");
 var debug_1 = __importDefault(require("debug"));
+var index_1 = require("./connection/index");
 // import   mysqlConnection  from './db'
+var User_1 = require("./entity/User");
+var index_2 = __importDefault(require("./testData/index"));
 var app = express_1.default();
 var server = http.createServer(app);
 var port = 3000;
@@ -93,38 +82,50 @@ app.use(expressWinston.errorLogger({
 app.get('/', function (req, res) {
     res.status(200).send('Server Up');
 });
-// mysqlConnection.query('SELECT * from testTable', (error, rows , fields) => {
-//     if (error) throw error;
-//     console.log('mysql test rows: ', rows);
-//   });
+index_1.myConnection.then(function (connection) { return __awaiter(_this, void 0, void 0, function () {
+    var users, adminSearch;
+    var _this = this;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log("typeorm mysql start");
+                return [4 /*yield*/, connection.manager.find(User_1.Users)];
+            case 1:
+                users = _a.sent();
+                adminSearch = users.map(function (item) { return item.name; });
+                index_2.default.forEach(function (item) { return __awaiter(_this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!!adminSearch.includes(item.name)) return [3 /*break*/, 2];
+                                return [4 /*yield*/, connection.manager.save(item)];
+                            case 1:
+                                _a.sent();
+                                _a.label = 2;
+                            case 2: return [2 /*return*/];
+                        }
+                    });
+                }); });
+                console.log("typeorm mysql end");
+                return [2 /*return*/];
+        }
+    });
+}); }).catch(function (error) { return console.log(error); });
 server.listen(port, function () {
     debugLog("Server running at http://localhost:" + port);
     routes.forEach(function (route) {
         debugLog("Routes configured from " + route.getName());
     });
 });
-typeorm_1.createConnection().then(function (connection) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, users;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                console.log("Inserting a new user into the database...");
-                user = new User_1.User();
-                user.firstName = "testData";
-                user.lastName = "_10:48";
-                user.age = 29;
-                return [4 /*yield*/, connection.manager.save(user)];
-            case 1:
-                _a.sent();
-                console.log("Saved a new user with id: " + user.id);
-                console.log("Loading users from the database...");
-                return [4 /*yield*/, connection.manager.find(User_1.User)];
-            case 2:
-                users = _a.sent();
-                console.log("Loaded users: ", users);
-                console.log("Here you can setup and run express/koa/any other framework.");
-                return [2 /*return*/];
-        }
-    });
-}); }).catch(function (error) { return console.log(error); });
+// createConnection().then( async connection => {
+//     console.log("typeorm mysql start");
+//     const users = await connection.manager.find(Users);
+//     const adminSearch = users.map( item => item.name );
+//     testUserList.forEach( async item => {
+//         if(!adminSearch.includes(item.name)){
+//             await connection.manager.save(item);
+//         }
+//     })
+//     console.log("typeorm mysql end");
+// }).catch(error => console.log(error));
 //# sourceMappingURL=index.js.map

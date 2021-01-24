@@ -5,7 +5,8 @@ const serverMsg:any = {
     'passwordsDoNotMatch' : '패스워드가 일치하지 않습니다',
     'emailAndPasswordDoNotEnter' : '이메일과 패스워드를 입력해 주세요',
     'signInFail' : '로그인에 실패했습니다.',
-    'signIn' : '로그인'
+    'signIn' : '로그인',
+    'doNotExist' : '존재하지 않는 아이디'
 }
 
 export default serverMsg;
