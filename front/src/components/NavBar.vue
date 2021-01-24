@@ -11,7 +11,7 @@
             </v-toolbar-title>
             <template>
                 <v-btn color="red" dark small absolute bottom right fab>
-                    <v-icon>mdi-plus</v-icon>
+                    <v-icon @click="test">mdi-plus</v-icon>
                 </v-btn>
             </template>
         </v-app-bar>
@@ -59,6 +59,10 @@
     @Component
     export default class NavBar extends Vue {
         drawer= true
+        test() {
+            console.log('asdasd')
+            this.$toast("success This is a success message");
+        }
     }
 </script>
 
