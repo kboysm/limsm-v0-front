@@ -31,7 +31,6 @@ export class UsersRoutes extends CommonRoutesConfig {
         this.app.route('/signUp')
             .post( (req: express.Request, res: express.Response) => {
                 const { email , password , name } = req.body
-                console.log( email , password , name );
                 if( email && password && name ) {
                     const newUser = new Users();
                         newUser.email= email
@@ -46,21 +45,46 @@ export class UsersRoutes extends CommonRoutesConfig {
                             const user = await connection.getRepository(Users).createQueryBuilder("user").where("user.email = :email", { email: newUser.email }).getOne();
                             console.log( user)
                             if(user){
-                                res.status(200).send('이미 존재하는 id')
+                                res.status(200).send('idExists')
                             }else {
                                 await getConnection().createQueryBuilder().insert().into(Users).values(
                                     newUser
                                 ).execute();
-                                res.status(200).send('회원가입 완료')
+                                res.status(200).send('signUp')
                             }
                             // res.status(200).send(user)
                         }).catch(error =>{
-                            res.status(400).send( '회원가입 실패' ) //DB 생성 후 유저 추가 로직
+                            res.status(400).send( 'signUpFail' ) //DB 생성 후 유저 추가 로직
                         });
 
                 }
                 // res.status(200).send( `List Of Users `) //DB 생성 후 유저 추가 로직
             })
+        
+        this.app.route('/signIn')
+        .post( (req: express.Request, res: express.Response) => {
+            const { email , password  } = req.body
+            if( email && password ) {
+                    myConnection.then( async connection => {
+                        const cryptoPassword = crypto.scryptSync(password,'lsm',64, { N: 1024 }).toString('hex')
+                        console.log("signIn");
+                        const user = await connection.getRepository(Users).createQueryBuilder("user").where("user.email = :email", { email }).getOne();
+                        console.log( user )
+                        if(user.password === cryptoPassword){
+                            res.status(200).send('signIn')
+                        }else {
+                            res.status(200).send('passwordsDoNotMatch')
+                        }
+                        // res.status(200).send(user)
+                    }).catch(error =>{
+                        res.status(405).send( 'signInFail' ) //DB 생성 후 유저 추가 로직
+                    });
+
+            }else {
+                res.status(405).send('emailAndPasswordDoNotEnter')
+            }
+            // res.status(200).send( `List Of Users `) //DB 생성 후 유저 추가 로직
+        })
 
         this.app.route('./users/:userId')
             .all( (req: express.Request, res: express.Response, next: express.NextFunction) => {//미들웨어 유저 인증 용도

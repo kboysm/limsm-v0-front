@@ -22,13 +22,13 @@
                                                 </div>
                                                 <h4 class="text-center mt-4">your email</h4>
                                                 <v-form>
-                                                    <v-text-field label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
-                                                    <v-text-field id="password" label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
+                                                    <v-text-field v-model="signInObj.email" label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
+                                                    <v-text-field v-model="signInObj.password" id="password" label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
                                                 </v-form>
                                             <h3 class="text-center mt-3">Forget your password ?</h3>
                                             </v-card-text>
                                             <div class="text-center mt-3 mb-1">
-                                                <v-btn rounded color="red" dark>SIgn In</v-btn>
+                                                <v-btn rounded color="red" dark @click="signIn">SIgn In</v-btn>
                                             </div>
                                         </v-col>
                                         <v-col cols="12" md="4" class="red accent-3">
@@ -92,10 +92,13 @@
     import {AxiosRequestConfig} from 'axios'
     
     @Component
-    export default class  extends Vue {
+    export default class SignIn extends Vue {
+        $axios: any;
+        $toast: any;
+        $serverMsg: any;
         step=1
         signInObj= {
-            id: '',
+            email: '',
             password: '',
         }
 
@@ -105,13 +108,30 @@
             name: '',
         }
 
-        signUp() {
+
+        signUp():void {
             this.$axios.post("/signUp" , this.signUpObj)
             .then( r => {
-                console.log(r.data)
+                this.$toast(this.$serverMsg[r.data]);
+                if(r.data === 'signUp') {
+                    this.step= 1;
+                }
+            }).catch(e => {
+                console.error(e);
             })
         }
 
+        signIn():void {
+            this.$axios.post("/signIn" , this.signInObj)
+            .then( r => {
+                this.$toast(this.$serverMsg[r.data]);
+                // if(r.data === 'signUp') {
+                //     this.step= 1;
+                // }
+            }).catch(e => {
+                console.error(e);
+            })
+        }
     }
 </script>
 
