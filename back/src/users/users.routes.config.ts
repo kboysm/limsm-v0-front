@@ -74,7 +74,7 @@ export class UsersRoutes extends CommonRoutesConfig {
                         }
                         if(user.password === cryptoPassword){
                             const r = jwt.sign({id: user.id ,email: user.email , name:user.name} , secretKey.jwtKey);
-                            res.status(200).send({ msg: 'signIn' , token: r })
+                            res.status(200).send({ msg: 'signIn' , token:'Bearer '+ r })
                         }else {
                             res.status(200).send({ msg: 'passwordsDoNotMatch' , token: '' })
                         }
