@@ -125,7 +125,8 @@
             this.$axios.post("/signIn" , this.signInObj)
             .then( r => {
                 // console.log(r.data);
-                this.$toast(this.$serverMsg[r.data]);
+                this.$toast(this.$serverMsg[r.data.msg]);
+                console.log(r.data);
                 // if(r.data === 'signUp') {
                 //     this.step= 1;
                 // }

@@ -5,6 +5,7 @@ import * as express from 'express'
 import {getConnection} from 'typeorm'
 import crypto from 'crypto'
 import secretKey from '../secretKey/index'
+import jwt from 'jsonwebtoken'
 
 export class UsersRoutes extends CommonRoutesConfig {
     constructor(app: express.Application ) {
@@ -67,24 +68,23 @@ export class UsersRoutes extends CommonRoutesConfig {
             if( email && password ) {
                     myConnection.then( async connection => {
                         const cryptoPassword = crypto.createHmac('sha256',secretKey.cryptoKey).update(password).digest('hex')
-                        console.log("signIn");
                         const user = await connection.getRepository(Users).createQueryBuilder("user").where("user.email = :email", { email }).getOne();
-                        console.log( user )
                         if(!user) {
-                            res.status(200).send('doNotExist') 
+                            res.status(200).send({ msg: 'doNotExist' , token: '' }) 
                         }
                         if(user.password === cryptoPassword){
-                            res.status(200).send('signIn')
+                            const r = jwt.sign({id: user.id ,email: user.email , name:user.name} , secretKey.jwtKey);
+                            res.status(200).send({ msg: 'signIn' , token: r })
                         }else {
-                            res.status(200).send('passwordsDoNotMatch')
+                            res.status(200).send({ msg: 'passwordsDoNotMatch' , token: '' })
                         }
                         // res.status(200).send(user)
                     }).catch(error =>{
-                        res.status(200).send( 'signInFail' ) //DB 생성 후 유저 추가 로직
+                        res.status(200).send({ msg: 'signInFail' , token: '' }) //DB 생성 후 유저 추가 로직
                     });
 
             }else {
-                res.status(200).send('emailAndPasswordDoNotEnter')
+                res.status(200).send({ msg: 'emailAndPasswordDoNotEnter' , token: '' })
             }
            
         })
