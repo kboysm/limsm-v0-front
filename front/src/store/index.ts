@@ -20,10 +20,11 @@ const store: StoreOptions<State> = {
         }
     },
     getters: {
-        getToken: (state: State) => state.token;
+        getToken: (state: State) => state.token
     }
 }
 
+export default new Vuex.Store(store);
 
 // import state from './states'
 // import mutations from './mutations'
