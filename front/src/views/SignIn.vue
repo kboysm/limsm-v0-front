@@ -89,8 +89,8 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    import {AxiosRequestConfig} from 'axios'
-    
+    import {AxiosError , AxiosResponse} from 'axios'
+    import { mapActions } from 'vuex'
     @Component
     export default class SignIn extends Vue {
         $axios: any;
@@ -111,26 +111,28 @@
 
         signUp():void {
             this.$axios.post("/signUp" , this.signUpObj)
-            .then( r => {
+            .then( (r:AxiosResponse) => {
                 this.$toast(this.$serverMsg[r.data]);
                 if(r.data === 'signUp') {
                     this.step= 1;
                 }
-            }).catch(e => {
+            }).catch((e: AxiosError) => {
                 console.error(e);
             })
         }
 
         signIn():void {
             this.$axios.post("/signIn" , this.signInObj)
-            .then( r => {
+            .then( (r:AxiosResponse) => {
                 // console.log(r.data);
                 this.$toast(this.$serverMsg[r.data.msg]);
-                console.log(r.data);
+                if(r.data.token) {
+                    this.$store.dispatch('setToken' , r.data.token);
+                }
                 // if(r.data === 'signUp') {
                 //     this.step= 1;
                 // }
-            }).catch(e => {
+            }).catch((e: AxiosError) => {
                 console.error(e);
             })
         }
