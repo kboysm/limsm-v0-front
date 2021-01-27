@@ -33,7 +33,7 @@
                         </v-badge>
                     </v-list-item-action>
                 </v-list-item>
-                <v-list-item router to="/SignIn">
+                <v-list-item router to="/SignIn" v-if="confirmSignIn">
                     <v-list-item-action>
                             <v-icon>fas fa-sign-in-alt</v-icon>
                     </v-list-item-action>
@@ -55,10 +55,18 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-
-    @Component
+    import { mapGetters } from 'vuex'
+    import _ from 'lodash'
+    @Component({
+        computed:mapGetters(['getToken'])
+    })
     export default class NavBar extends Vue {
         drawer= true
+        getToken:string
+        get confirmSignIn() {
+            return _.isEmpty( this.getToken );
+        }
+      
     }
 </script>
 

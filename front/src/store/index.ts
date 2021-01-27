@@ -11,6 +11,7 @@ const store: StoreOptions<State> = {
     },
     mutations: {
         setToken(state: State , token: string) {
+            localStorage.setItem('token' , token)
             state.token = token
         }
     },

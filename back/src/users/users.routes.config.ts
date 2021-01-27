@@ -7,6 +7,17 @@ import crypto from 'crypto'
 import secretKey from '../secretKey/index'
 import jwt from 'jsonwebtoken'
 
+const vertifyToken = (t) => {
+    return new Promise((resolve, reject) => {
+        if(!t) resolve({msg:'guest'})
+        if(t.length < 10 ) resolve({msg:'guest'})
+        jwt.verify(t , secretKey.jwtKey, (err , v) => {
+            if(err) reject(err)
+            resolve(v)
+        })
+    })
+}
+
 export class UsersRoutes extends CommonRoutesConfig {
     constructor(app: express.Application ) {
         super( app , 'UsersRoutes' );
@@ -74,7 +85,7 @@ export class UsersRoutes extends CommonRoutesConfig {
                         }
                         if(user.password === cryptoPassword){
                             const r = jwt.sign({id: user.id ,email: user.email , name:user.name} , secretKey.jwtKey);
-                            res.status(200).send({ msg: 'signIn' , token:'Bearer '+ r })
+                            res.status(200).send({ msg: 'signIn' , token: r })
                         }else {
                             res.status(200).send({ msg: 'passwordsDoNotMatch' , token: '' })
                         }

@@ -14,10 +14,10 @@
                         </v-col>
                         <v-col cols="12" md="8" class="pa-5">
                             <v-form>
-                                <v-text-field hide-details label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
+                                <v-text-field disabled hide-details label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
                                 <v-text-field hide-details label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
                                 <v-text-field hide-details label="Address" name="Address" prepend-icon="home" type="text" color="red"></v-text-field>
-                                <v-text-field hide-details label="Name" name="Name" prepend-icon="fas fa-user" type="text" color="red"></v-text-field>
+                                <v-text-field disabled hide-details label="Name" name="Name" prepend-icon="fas fa-user" type="text" color="red"></v-text-field>
                                 <v-text-field hide-details label="Phone" name="Phone" prepend-icon="fas fa-phone" type="text" color="red"></v-text-field>
                             </v-form>
                         </v-col>

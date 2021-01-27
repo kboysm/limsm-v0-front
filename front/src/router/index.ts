@@ -1,8 +1,16 @@
 import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import VueRouter, { RouteConfig, Route } from 'vue-router'
 import Home from '../views/Home.vue'
+import _ from 'lodash'
+import vuex from 'vuex'
 
 Vue.use(VueRouter)
+
+const beforeEnter = (to:Route , from:Route , next:any) => {
+    const token = localStorage.getItem('token')
+    if(_.isEmpty(token)) next('SignIn')
+    next()
+}
 
 const routes: Array<RouteConfig> = [
   {
@@ -31,12 +39,14 @@ const routes: Array<RouteConfig> = [
   {
     path: '/shopingCart',
     name: 'ShopingCart',
-    component: () => import(/* webpackChunkName: "about" */ '../views/ShopingCart.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/ShopingCart.vue'),
+    beforeEnter
   },
   {
     path: '/myPage',
     name: 'mypage',
-    component: () => import(/* webpackChunkName: "about" */ '../views/MyPage.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/MyPage.vue'),
+    beforeEnter
   }
 ]
 
