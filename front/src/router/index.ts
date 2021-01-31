@@ -11,7 +11,7 @@ const beforeEnter = (to:Route , from:Route , next:any) => {
     if(_.isEmpty(token)) next('SignIn')
     next()
 }
-
+ 
 const routes: Array<RouteConfig> = [
   {
     path: '/',

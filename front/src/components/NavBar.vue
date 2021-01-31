@@ -10,8 +10,8 @@
                 </span>
             </v-toolbar-title>
             <template>
-                <v-btn color="red" dark small absolute bottom right fab>
-                    <v-icon>mdi-plus</v-icon>
+                <v-btn @click="drawer= !drawer" color="red" dark small absolute bottom left fab>
+                    <v-icon>mdi-menu</v-icon>
                 </v-btn>
             </template>
         </v-app-bar>

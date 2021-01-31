@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col cols="12" md="6">
-                <v-card class="mx-auto my-12">
+                <v-card class="mx-auto my-12" height="400" min-width="430" width="600">
                     <v-card-title>회원 정보</v-card-title>
                     <v-divider />
                     <v-row>
@@ -25,7 +25,7 @@
                 </v-card>
             </v-col>
             <v-col cols="12" md="6">
-                <v-card class="mx-auto my-12">
+                <v-card class="mx-auto my-12" height="400" min-width="430" width="600">
                     <v-card-title>주문 정보</v-card-title>
                     <v-divider />
                     <v-row>
@@ -81,7 +81,7 @@
         </v-row>
         <v-row>
             <v-col cols="12" md="6">
-                <v-card>
+                <v-card class="mx-auto my-12" max-height="1200" min-width="430" width="600">
                     <v-card-title>1:1문의</v-card-title>
                     <v-divider />
                     <v-row justify="center">
@@ -104,7 +104,7 @@
                 </v-card>
             </v-col>
             <v-col cols="12" md="6">
-                <v-card class="justify-center align-center">
+                <v-card class="mx-auto my-12 justify-center align-center" max-height="800" min-width="430" width="600">
                     <v-card-title>최근 본 상품</v-card-title>
                     <v-divider />
                     <v-row class="pa-3">
