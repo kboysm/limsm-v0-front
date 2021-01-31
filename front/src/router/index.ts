@@ -29,7 +29,11 @@ const routes: Array<RouteConfig> = [
   {
     path: '/signIn',
     name: 'SignIn',
-    component: () => import(/* webpackChunkName: "about" */ '../views/SignIn.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/SignIn.vue'),
+    beforeEnter: ( to, from , next) => {
+      if(localStorage.getItem('token')) next('mypage')
+      next();
+    }
   },
   {
     path: '/board',

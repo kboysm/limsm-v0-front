@@ -124,10 +124,11 @@
         signIn():void {
             this.$axios.post("/signIn" , this.signInObj)
             .then( (r:AxiosResponse) => {
-                // console.log(r.data);
+                console.log(r.data);
                 this.$toast(this.$serverMsg[r.data.msg]);
                 if(r.data.token) {
                     this.$store.dispatch('setToken' , r.data.token);
+                    this.$store.dispatch('setUser' , r.data.user);
                 }
                 // if(r.data === 'signUp') {
                 //     this.step= 1;
