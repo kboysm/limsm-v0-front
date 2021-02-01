@@ -100,16 +100,27 @@ export class UsersRoutes extends CommonRoutesConfig {
            
         })
 
-        this.app.route('./users/:userId')
+        this.app.route('/user/:userId')
             .all( (req: express.Request, res: express.Response, next: express.NextFunction) => {//미들웨어 유저 인증 용도
-                next();
+                const token: string = req.headers['authorization']
+                
+                if(token) {
+                    vertifyToken(token)
+                    .then( r => {
+                        if(r['id'] == req.params.userId) next();
+                    })
+                    
+                }else{
+                    res.status(200).send('본인이 아닙니다.');
+                }
             })
             .get( (req: express.Request, res: express.Response) => {
-                res.status(200).send(`GET requested for id ${req.params.userId}`);
+                console.log('get 진입')
+                res.status(200).send(`GET requested for id${req.params.userId}`);
             })
-            .post( (req: express.Request, res: express.Response) => {
-                res.status(200).send(`Post requested for id ${req.params}`);
-            })
+            // .post( (req: express.Request, res: express.Response) => {
+            //     res.status(200).send(`Post requested for id ${req.params}`);
+            // })
             // .put( (req: express.Request, res: express.Response) => {
             //     res.status(200).send(`PUT requested for id ${req.params.userId}`);
             // })

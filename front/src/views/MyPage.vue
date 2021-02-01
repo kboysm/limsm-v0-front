@@ -133,10 +133,21 @@
     @Component({
         components:{
             ProductCard
+        },
+        created() {
+            this.getUser();
         }
     })
     export default class  extends Vue {
-        
+        user= {}
+        $axios: any;
+
+        async getUser() {
+            await this.$axios.get('/user/4')
+            .then( r => {
+                console.log(r);
+            })
+        }
     }
 </script>
 
