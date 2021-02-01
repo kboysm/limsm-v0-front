@@ -6,10 +6,19 @@ interface State {
     token : string;
     user : any;
 }
+
+const user:any = ():any => {
+    const stringUser: string| null = localStorage.getItem('user');
+    if(stringUser) return JSON.parse( stringUser )
+    else{
+        return {}
+    }
+}
+
 const store: StoreOptions<State> = {
     state: {
         token: localStorage.getItem('token') || '',
-        user: localStorage.getItem('user') ? JSON.parse( localStorage.getItem('user')) : {}
+        user: user()
     },
     mutations: {
         setToken(state: State , token: string) {

@@ -107,6 +107,7 @@
             password: '',
             name: '',
         }
+      $router: any;
 
 
         signUp():void {
@@ -130,6 +131,7 @@
                     this.$store.dispatch('setToken' , r.data.token);
                     this.$store.dispatch('setUser' , r.data.user);
                 }
+                this.$router.push('/')
                 // if(r.data === 'signUp') {
                 //     this.step= 1;
                 // }
