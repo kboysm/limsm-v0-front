@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column , CreateDateColumn , UpdateDateColumn} from "typeorm";
 
 @Entity()
 export class Users {
@@ -15,10 +15,10 @@ export class Users {
     @Column()
     address: string; // 주소
     
-    @Column()
+    @CreateDateColumn({ name : 'created_at'})
     createdAt: Date; //가입 날짜
     
-    @Column()
+    @UpdateDateColumn({ name : 'updated_at'})
     updatedAt: Date; // 사용자 정보 수정 날짜 - 가장 최근만 표시하기로 결정
     
     @Column()
