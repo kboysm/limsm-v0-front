@@ -3,10 +3,10 @@
         <v-app-bar color="white" dark app class="line">
             <v-toolbar-title class="text-uppercase red--text">
                 <span class="font-weight-light">
-                    Cloud
+                    limsm
                 </span>
                 <span>
-                    Invertory
+                    -v0
                 </span>
             </v-toolbar-title>
             <template>
