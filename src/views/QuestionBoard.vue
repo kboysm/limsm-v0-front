@@ -13,7 +13,7 @@
     import { Component, Vue } from 'vue-property-decorator';
 
     @Component
-    export default class  extends Vue {
+    export default class QuestionBoard extends Vue {
         columnas= [
             {text:'ID', value:'id', class:'red derken-4 white--text'},
             {text:'DESCRIPTION', value:'description', class:'red derken-4 white--text'},

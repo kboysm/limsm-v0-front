@@ -130,7 +130,8 @@
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
     import ProductCard from '@/components/product/mypageProductCard.vue'
-    @Component({
+    import { AxiosResponse} from 'axios'
+    @Component<MyPage>({
         components:{
             ProductCard
         },
@@ -138,13 +139,13 @@
             this.getUser();
         }
     })
-    export default class  extends Vue {
+    export default class MyPage extends Vue {
         user= {}
         $axios: any;
 
         async getUser() {
             await this.$axios.get('/user/4')
-            .then( r => {
+            .then( (r: AxiosResponse) => {
                 console.log(r);
             })
         }
