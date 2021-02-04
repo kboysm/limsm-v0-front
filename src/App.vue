@@ -9,13 +9,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import NavBar from '@/components/NavBar.vue'
-  @Component({
+  @Component<App>({
     components: {
       NavBar
     }
   })
   export default class App extends Vue {
-
   }
 </script>
 <style lang="scss" scoped>
