@@ -1,20 +1,20 @@
 <template>
   <v-app :style="{background: $vuetify.theme.themes.light.backgrounds}">
     <v-container>
-      <v-row>
-        <v-col cols="12" md="4">
+      <v-row class="ml-md-4 mb-sm-12">
+        <v-col cols="12" md="4" sm="6" xs="6">
           <v-text-field v-model="searchItem" label="Search items" prepend-icon="search" color="red" error></v-text-field>
         </v-col>
           <v-spacer></v-spacer>
-          <span class="red--text mt-9">{{productList.length}} Items</span>
-          <v-btn text class="mt-7">
-            <v-icon color="red" class="mr-n10">menu</v-icon>
-          </v-btn>
-          <v-btn text class="mt-7">
-            <v-icon color="red" class="mr-n10">dashboard</v-icon>
-          </v-btn>
-      </v-row>
-      <v-row >
+            <span class="red--text mt-8">{{productList.length}} Items</span>
+            <v-btn text class="mt-7">
+              <v-icon color="red" class="mr-n10">menu</v-icon>
+            </v-btn>
+            <v-btn text class="mt-7 mr-sm-12">
+              <v-icon color="red" class="mr-n10">dashboard</v-icon>
+            </v-btn>
+      </v-row >
+      <v-row>
         <product-card :product="item" :idx=idx v-for="(item,idx) in viewProductList" :key="idx" />
       </v-row>
     </v-container>

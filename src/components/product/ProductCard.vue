@@ -1,5 +1,5 @@
 <template>
-     <v-col cols="12" md="3" xs="12" class="mb-4">
+     <v-col cols="12" xl="2" lg="3" md="4" sm="6" xs="12" align-self="center" class="mb-4">
           <v-hover v-slot:default="{ hover }">
             <v-card max-width="300" height="300" align="center">
               <v-card-actions>
@@ -28,7 +28,7 @@
                   <v-btn outlined="" color="white">detail</v-btn>
                 </div>
               </v-expand-transition>
-              <v-btn absolute="" color="red" class="white--text" fab large left top>
+              <v-btn absolute="" color="red" class="white--text d-none d-sm-flex" fab large left top>
                 <h1>{{idx+1}}</h1>
               </v-btn>
             </v-card>
