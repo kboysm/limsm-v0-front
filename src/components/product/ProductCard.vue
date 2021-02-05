@@ -25,7 +25,7 @@
                 {{product.price.toLocaleString('ko-KR')}}원</v-card-text>
               <v-expand-transition>
                 <div v-if="hover" class="d-flex trantision-fast-in-fast-out red v-card-reveal display-3 white--text" style="height: 100%">
-                  <v-btn outlined="" color="white">detail</v-btn>
+                  <v-btn @click="dialog=true" outlined="" color="white">detail</v-btn>
                 </div>
               </v-expand-transition>
               <v-btn absolute="" color="red" class="white--text d-none d-sm-flex" fab large left top>
@@ -33,12 +33,14 @@
               </v-btn>
             </v-card>
           </v-hover>
+          <product-dialog :dialog="dialog" @dialogFalse="dialogFalse" :product="product"></product-dialog>
         </v-col>
+
 </template>
 
 <script lang="ts">
     import { Component, Vue, Prop } from 'vue-property-decorator';
-
+    import productDialog from './productDialog.vue'
 
     interface Product {
       id: number; // pk
@@ -62,6 +64,9 @@
       updatedAt: Date; 
       }
     @Component<ProductCard>({
+      components:{
+        productDialog
+      },
       created() {
         this.rating = Math.ceil(this.product.grade/this.product.salesQuantity *10)/10
       }
@@ -71,6 +76,10 @@
         @Prop() idx!: number
         baseUrl = process.env.VUE_APP_BASE_URL
         rating = 0
+        dialog = false
+        dialogFalse() {
+          this.dialog=false
+        }
     }
 </script>
 
