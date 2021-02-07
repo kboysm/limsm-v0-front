@@ -1,59 +1,51 @@
 <template>
               <v-dialog
-              v-model="dialog"
-              fullscreen
-              hide-overlay
-              transition="dialog-bottom-transition"
-            >
-            <v-card>
-              <v-toolbar
-                dark
-                color="red"
+                v-model="dialog"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
               >
-                <v-btn
-                  icon
-                  dark
-                  @click="dialogFalse"
+              <v-card>
+                <v-card-title class="red">
+                  <v-card-actions>
+                    <v-btn
+                      icon
+                      dark
+                      @click="dialogFalse"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                  <h4 class="white--text ml-4">
+                    {{product.name}}
+                  </h4>
+                </v-card-title>
+                <v-tabs
+                  v-model="tab"
+                  background-color="red"
+                  color="white"
+                  grow
+                  flat
                 >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-toolbar-title>{{product.name}}</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-toolbar-items>
-                  <v-btn
-                    dark
-                    text
+                  <v-tab
+                    v-for="item in items"
+                    :key="item"
+                    flat
                   >
-                    장바구니
-                  </v-btn>
-                  <v-btn
-                    dark
-                    text
+                    {{ item }}
+                  </v-tab>
+                </v-tabs>
+
+                <v-tabs-items v-model="tab">
+                  <v-tab-item
+                    v-for="item in items"
+                    :key="item"
                   >
-                    1:1문의
-                  </v-btn>
-                </v-toolbar-items>
-              </v-toolbar>
-              <v-list
-                three-line
-                subheader
-              >
-                <v-subheader>User Controls</v-subheader>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title>Content filtering</v-list-item-title>
-                    <v-list-item-subtitle>Set the content filtering level to restrict apps that can be downloaded</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title>Password</v-list-item-title>
-                    <v-list-item-subtitle>Require password for purchase or use password to restrict purchase</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-              <v-divider></v-divider>
-              
+                    <v-card v-if="item === '상품정보'" flat>
+                      <v-img :src="product.description"></v-img>
+                    </v-card>
+                  </v-tab-item>
+                </v-tabs-items>
             </v-card>
           </v-dialog>
 </template>
@@ -90,6 +82,11 @@
         dialogFalse() {
             this.$emit('dialogFalse',false);
         }
+        tab= null
+        items= [
+          '상품정보', '바로구매', '장바구니', '1:1문의'
+        ]
+        text= 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
 </script>
 
