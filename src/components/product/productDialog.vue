@@ -44,6 +44,13 @@
                     <v-card v-if="item === '상품정보'" flat>
                       <v-img :src="product.description"></v-img>
                     </v-card>
+                    <product-order v-else-if="item === '바로구매'"></product-order>
+                    <v-card v-else-if="item === '장바구니'" flat>
+                      장바구니
+                    </v-card>
+                    <v-card v-else-if="item === '1:1문의'" flat>
+                      1:1문의
+                    </v-card>
                   </v-tab-item>
                 </v-tabs-items>
             </v-card>
@@ -52,7 +59,7 @@
 
 <script lang="ts">
     import { Component, Vue, Prop } from 'vue-property-decorator';
-
+    import ProductOrder from './productOrder.vue'
     interface Product {
       id: number; // pk
 
@@ -75,7 +82,11 @@
       updatedAt: Date; 
       }
 
-    @Component
+    @Component({
+      components: {
+        ProductOrder
+      }
+    })
     export default class  extends Vue {
         @Prop() product!: Product
         @Prop() dialog!: boolean
