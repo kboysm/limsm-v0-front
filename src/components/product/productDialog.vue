@@ -48,9 +48,7 @@
                     <v-card v-else-if="item === '장바구니'" flat>
                       장바구니
                     </v-card>
-                    <v-card v-else-if="item === '1:1문의'" flat>
-                      1:1문의
-                    </v-card>
+                    <one-to-one-inquiry v-else-if="item === '1:1문의'"></one-to-one-inquiry>
                     <v-card v-else-if="item === '구매후기'" flat>
                       구매후기
                     </v-card>
@@ -63,6 +61,7 @@
 <script lang="ts">
     import { Component, Vue, Prop } from 'vue-property-decorator';
     import ProductOrder from './productOrder.vue'
+    import OneToOneInquiry from '../question/OneToOneInquiry.vue'
     interface Product {
       id: number; // pk
 
@@ -87,7 +86,7 @@
 
     @Component({
       components: {
-        ProductOrder
+        ProductOrder , OneToOneInquiry
       }
     })
     export default class  extends Vue {
