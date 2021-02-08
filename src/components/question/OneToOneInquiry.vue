@@ -1,46 +1,28 @@
 <template>
-    <v-card flat>
-        <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-            <button :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
-                Bold
-            </button>
-            </editor-menu-bar>
-        <editor-content :editor="editor" />
+    <v-card class="px-12 mt-2" flat> 
+        <v-card-title class="text-h5">1:1문의</v-card-title>
+        <vue-editor class="editor" v-model="content"></vue-editor>
+        <br>
+        <v-card-actions>
+            <v-btn>제출</v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    import { Editor , EditorContent } from 'tiptap';
-    import { Bold, Italic, Link, HardBreak, Heading } from 'tiptap-extensions'
+    import { VueEditor } from "vue2-editor";
+
     @Component<OneToOneInquiry>({
         components: { 
-            EditorContent
-         },
-        mounted() {
-                this.editor = new Editor({
-                    extensions: [
-                        new Bold(),
-                        new Italic(),
-                        new Link(),
-                        new HardBreak(),
-                        new Heading()
-                    ],
-                }) 
-            },
-        beforeDestroy() {
-            if(this.editor){
-                this.editor.destroy() 
-            }
-            },
-
+            VueEditor
+        },
     })
     export default class OneToOneInquiry extends Vue {
-        editor: Editor | null = null
+        content= "<h1>제목: </h1>"
     }
 </script>
 
 <style scoped>
-
 
 </style>

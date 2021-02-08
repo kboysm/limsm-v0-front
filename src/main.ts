@@ -7,6 +7,7 @@ import vuetify from './plugins/vuetify';
 import './plugins/axios'
 import  serverMsg  from './serverMsg/index'
 
+
 Vue.prototype.$serverMsg = serverMsg;
 Vue.config.productionTip = false
 
