@@ -44,12 +44,15 @@
                     <v-card v-if="item === '상품정보'" flat>
                       <v-img :src="product.description"></v-img>
                     </v-card>
-                    <product-order v-else-if="item === '바로구매'"></product-order>
+                    <product-order :product="product" v-else-if="item === '바로구매'"></product-order>
                     <v-card v-else-if="item === '장바구니'" flat>
                       장바구니
                     </v-card>
                     <v-card v-else-if="item === '1:1문의'" flat>
                       1:1문의
+                    </v-card>
+                    <v-card v-else-if="item === '구매후기'" flat>
+                      구매후기
                     </v-card>
                   </v-tab-item>
                 </v-tabs-items>
@@ -95,7 +98,7 @@
         }
         tab= null
         items= [
-          '상품정보', '바로구매', '장바구니', '1:1문의'
+          '상품정보', '바로구매', '장바구니', '1:1문의','구매후기'
         ]
         text= 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
