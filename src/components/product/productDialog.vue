@@ -32,22 +32,22 @@
                     :key="item"
                     flat
                   >
-                    {{ item }}
+                  {{ item }}
                   </v-tab>
                 </v-tabs>
 
-                <v-tabs-items v-model="tab">
+                <v-tabs-items v-model="tab" >
                   <v-tab-item
                     v-for="item in items"
                     :key="item"
                   >
                     <v-card v-if="item === '상품정보'" flat>
+                          <v-btn @click="addCart" class="mt-5 mr-3" color="red" dark small fixed middle right fab>
+                              <v-icon>fas fa-shopping-cart</v-icon>
+                          </v-btn>
                       <v-img :src="product.description"></v-img>
                     </v-card>
                     <product-order :product="product" v-else-if="item === '바로구매'"></product-order>
-                    <v-card v-else-if="item === '장바구니'" flat>
-                      장바구니
-                    </v-card>
                     <one-to-one-inquiry v-else-if="item === '1:1문의'"></one-to-one-inquiry>
                     <product-review v-else-if="item === '구매후기'"></product-review>
                   </v-tab-item>
@@ -96,9 +96,13 @@
         }
         tab= null
         items= [
-          '상품정보', '바로구매', '장바구니', '1:1문의','구매후기'
+          '상품정보', '바로구매',  '1:1문의','구매후기'
         ]
         text= 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+
+        addCart():void {
+          alert('add cart')
+        }
     }
 </script>
 
