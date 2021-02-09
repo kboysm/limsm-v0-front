@@ -129,7 +129,7 @@
                 this.$toast(this.$serverMsg[r.data.msg]);
                 if(r.data.token) {
                     this.$store.dispatch('setToken' , r.data.token);
-                    this.$store.dispatch('setUser' , r.data.user);
+                    this.$store.dispatch('setUser' , r.data.user_);
                 }
                 this.$router.push('/')
                 // if(r.data === 'signUp') {

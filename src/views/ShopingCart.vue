@@ -14,10 +14,43 @@
                         <template v-slot:top>
                         <v-switch
                             v-model="singleSelect"
-                            label="Single select"
+                            label="단품 선택"
                             class="pa-3"
                         ></v-switch>
                         </template>
+                        <template v-slot:item.price="{ item }">
+                          {{item.price * item.purchaseQuantity}}
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                        <v-icon
+                          small
+                          class="mr-2"
+                          @click="plusPurchaseQuantity(item)"
+                        >
+                          mdi-plus
+                        </v-icon>
+                        <v-icon
+                          small
+                          class="mr-2"
+                          @click="minusPurchaseQuantity(item)"
+                        >
+                          mdi-minus
+                        </v-icon>
+                        <v-icon
+                          small
+                          @click="deleteItem(item)"
+                        >
+                          mdi-delete
+                        </v-icon>
+                      </template>
+                      <template v-slot:no-data>
+                        <v-btn
+                          color="primary"
+                          @click="initialize"
+                        >
+                          Reset
+                        </v-btn>
+                      </template>
                     </v-data-table>
                 </v-col>
                 <v-col cols="12" md="6">
@@ -28,14 +61,14 @@
                         >
                             <v-list-item>
                             <v-list-item-content>
-                                <v-list-item-title>총 3개의 상품금액: <span class="red--text">xxx원</span></v-list-item-title>
+                                <v-list-item-title>총 {{this.desserts.length}}개의 상품금액: <span class="red--text">{{totalPrice.toLocaleString('ko-KR')}}원</span></v-list-item-title>
                             </v-list-item-content>
                             </v-list-item>
 
                             <v-list-item two-line>
                             <v-list-item-content>
                                 <v-list-item-title>배송비</v-list-item-title>
-                                <v-list-item-subtitle class="red--text">3000원</v-list-item-subtitle>
+                                <v-list-item-subtitle class="red--text">{{deliveryFee.toLocaleString('ko-KR')}}원</v-list-item-subtitle>
                             </v-list-item-content>
                             </v-list-item>
 
@@ -43,7 +76,7 @@
                             <v-list-item-content>
                                 <v-list-item-title>합계</v-list-item-title>
                                 <v-list-item-subtitle class="red--text">
-                                302492039원
+                                {{( totalPrice + deliveryFee ).toLocaleString('ko-KR')}}원
                                 </v-list-item-subtitle>
                             </v-list-item-content>
                             </v-list-item>
@@ -59,105 +92,74 @@
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
 
-    @Component
+    interface itemList {
+            id: number;
+            name: string;
+            price: number;
+            grade: number;
+            purchaseQuantity: number;
+          }
+
+    @Component({
+      created() {
+        for(let i =1 ; i<4 ; i++) {
+          let cloneProduct = {
+            id: i,
+            name: '테스트 컴퓨터 '+i,
+            price: 300000,
+            grade: 5,
+            purchaseQuantity: 1+i
+          }
+          this.desserts.push(cloneProduct);
+        }
+      }
+    })
     export default class ShopingCart extends Vue {
         singleSelect= false
         selected= []
         headers= [
           {
-            text: 'Dessert (100g serving)',
+            text: '상품명',
             align: 'start',
             sortable: false,
             value: 'name',
           },
-          { text: 'Calories', value: 'calories' },
-          { text: 'Fat (g)', value: 'fat' },
-          { text: 'Carbs (g)', value: 'carbs' },
-          { text: 'Protein (g)', value: 'protein' },
-          { text: 'Iron (%)', value: 'iron' },
+          { text: '가격', value: 'price' },
+          { text: '평점', value: 'grade' },
+          { text: '수량', value: 'purchaseQuantity' },
+          { text: 'Actions', value: 'actions', sortable: false },
         ]
         desserts= [
           {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%',
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%',
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%',
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%',
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%',
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%',
+            id: 0,
+            name: '테스트 컴퓨터',
+            price: 300000,
+            grade: 5,
+            purchaseQuantity: 1
           },
         ]
+        deliveryFee = 3000
+
+
+        plusPurchaseQuantity( item: itemList ) {
+          item['purchaseQuantity']++;
+        }
+        minusPurchaseQuantity( item: itemList ) {
+          if( item['purchaseQuantity'] === 1 ) {
+            this.desserts.splice( this.desserts.indexOf(item) , 1 )
+          }
+          item['purchaseQuantity']--;
+        }
+        deleteItem( item: itemList ) {
+          this.desserts.splice( this.desserts.indexOf(item) , 1 )
+        }
+        get totalPrice(): number {
+          let totalPrice: number = 0
+          this.desserts.forEach( item => {
+            totalPrice += (item.price * item.purchaseQuantity)
+          })
+          return totalPrice;
+        }
     }
 </script>
 

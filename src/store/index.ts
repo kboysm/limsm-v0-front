@@ -4,11 +4,22 @@ import Vuex, { StoreOptions, ActionContext } from 'vuex';
 Vue.use(Vuex)
 interface State {
     token : string;
-    user : any;
+    user : User;
+}
+
+interface User {
+    address: string;
+    age: number;
+    createdAt: Date;
+    email: string;
+    id: number;
+    name: string;
+    password: string;
+    updatedAt: Date;
 }
 
 const user:any = ():any => {
-    const stringUser: string| null = localStorage.getItem('user');
+    const stringUser: string | null = localStorage.getItem('user');
     if(stringUser) return JSON.parse( stringUser )
     else{
         return {}
@@ -25,7 +36,7 @@ const store: StoreOptions<State> = {
             localStorage.setItem('token' , token)
             state.token = token
         },
-        setUser(state: State , user: any) {
+        setUser(state: State , user: User) {
             localStorage.setItem('user' , JSON.stringify(user))
             state.user = user
         }
@@ -34,7 +45,7 @@ const store: StoreOptions<State> = {
         setToken({state, getters , dispatch , commit}:ActionContext<State, State>, token:string) {
             commit('setToken' , token);
         },
-        setUser({state, getters , dispatch , commit}:ActionContext<State, State>, user: any) {
+        setUser({state, getters , dispatch , commit}:ActionContext<State, State>, user: User) {
             commit('setUser' , user);
         }
     },
