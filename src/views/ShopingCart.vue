@@ -1,23 +1,17 @@
 <template>
     <v-container class="fill-height justify-center">
             <v-row>
-                <v-col cols="12" md="6">
+              <v-col cols="12">
+                <div class="mx-auto text-h3">장바구니</div>
+                <v-divider />
+              </v-col>
+                <v-col cols="12">
                     <v-data-table
-                        v-model="selected"
                         :headers="headers"
                         :items="desserts"
-                        :single-select="singleSelect"
                         item-key="name"
-                        show-select
-                        class="elevation-1"
+                        class="elevation-1 mx-2"
                     >
-                        <template v-slot:top>
-                        <v-switch
-                            v-model="singleSelect"
-                            label="단품 선택"
-                            class="pa-3"
-                        ></v-switch>
-                        </template>
                         <template v-slot:item.price="{ item }">
                           {{item.price * item.purchaseQuantity}}
                         </template>
@@ -53,7 +47,7 @@
                       </template>
                     </v-data-table>
                 </v-col>
-                <v-col cols="12" md="6">
+                <v-col cols="12">
                       <v-card
                             class="mx-auto pa-5"
                             max-width="400"
@@ -83,7 +77,7 @@
                             <v-list-item-action>
                                 <v-btn class="white--text" color="red" outlined>상품 주문</v-btn>
                             </v-list-item-action>
-                        </v-card>
+                      </v-card>
                 </v-col>
             </v-row>
     </v-container>
@@ -100,7 +94,7 @@
             purchaseQuantity: number;
           }
 
-    @Component({
+    @Component<ShopingCart>({
       created() {
         for(let i =1 ; i<4 ; i++) {
           let cloneProduct = {
@@ -116,7 +110,6 @@
     })
     export default class ShopingCart extends Vue {
         singleSelect= false
-        selected= []
         headers= [
           {
             text: '상품명',

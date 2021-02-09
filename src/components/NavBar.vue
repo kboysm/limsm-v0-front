@@ -18,7 +18,8 @@
         <v-navigation-drawer v-model="drawer" dark app mini-variant class="red">
             <v-list flat>
                 <v-list-item class="mb-12">
-                    <v-icon>fas fa-cloud-download-alt</v-icon>
+                    <!-- <v-icon>fas fa-cloud-download-alt</v-icon> -->
+                    <v-img :src="require('@/assets/heroku.png')" width="70" height="70"></v-img>
                 </v-list-item>
                 <v-list-item router to="/">
                     <v-list-item-action>
