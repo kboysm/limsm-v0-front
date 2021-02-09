@@ -59,7 +59,7 @@
 <script lang="ts">
     import { Component, Vue, Prop } from 'vue-property-decorator';
     import ProductOrder from './productOrder.vue'
-    // import OneToOneInquiry from '../question/OneToOneInquiry.vue'
+    import OneToOneInquiry from '../question/OneToOneInquiry.vue'
     import ProductReview from './ProductReview.vue'
     interface Product {
       id: number; // pk
@@ -86,7 +86,7 @@
     @Component({
       components: {
         ProductOrder , 
-        // OneToOneInquiry , 
+        OneToOneInquiry , 
         ProductReview
       }
     })

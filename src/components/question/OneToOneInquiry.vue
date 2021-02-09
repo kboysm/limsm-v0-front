@@ -11,11 +11,11 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    // import { VueEditor } from "vue2-editor";
+    import { VueEditor } from "vue2-editor";
 
     @Component<OneToOneInquiry>({
         components: { 
-            // VueEditor
+            VueEditor
         },
     })
     export default class OneToOneInquiry extends Vue {
