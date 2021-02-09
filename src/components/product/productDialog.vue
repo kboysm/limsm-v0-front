@@ -49,9 +49,7 @@
                       장바구니
                     </v-card>
                     <one-to-one-inquiry v-else-if="item === '1:1문의'"></one-to-one-inquiry>
-                    <v-card v-else-if="item === '구매후기'" flat>
-                      구매후기
-                    </v-card>
+                    <product-review v-else-if="item === '구매후기'"></product-review>
                   </v-tab-item>
                 </v-tabs-items>
             </v-card>
@@ -62,6 +60,7 @@
     import { Component, Vue, Prop } from 'vue-property-decorator';
     import ProductOrder from './productOrder.vue'
     import OneToOneInquiry from '../question/OneToOneInquiry.vue'
+    import ProductReview from './ProductReview.vue'
     interface Product {
       id: number; // pk
 
@@ -86,7 +85,7 @@
 
     @Component({
       components: {
-        ProductOrder , OneToOneInquiry
+        ProductOrder , OneToOneInquiry , ProductReview
       }
     })
     export default class  extends Vue {

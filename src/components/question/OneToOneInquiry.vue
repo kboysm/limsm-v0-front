@@ -1,7 +1,7 @@
 <template>
     <v-card class="px-12 mt-2" flat> 
         <v-card-title class="text-h5">1:1문의</v-card-title>
-        <vue-editor class="editor" v-model="content"></vue-editor>
+        <vue-editor v-model="content"></vue-editor>
         <br>
         <v-card-actions>
             <v-btn>제출</v-btn>
