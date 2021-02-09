@@ -57,13 +57,13 @@
         items= [
         {
           color: '#1F7087',
-          src: 'http://localhost:3000/img/0.PNG',
+          src: process.env.VUE_APP_BASE_URL + 'img/0.PNG',
           title: '컴퓨터 테스트1',
           artist: 'Foster the People',
         },
         {
           color: '#952175',
-          src: 'http://localhost:3000/img/0.PNG',
+          src: process.env.VUE_APP_BASE_URL + 'img/0.PNG',
           title: '컴퓨터 테스트2',
           artist: 'Ellie Goulding',
         },

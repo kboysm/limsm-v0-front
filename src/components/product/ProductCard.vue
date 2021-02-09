@@ -25,7 +25,7 @@
                 {{product.price.toLocaleString('ko-KR')}}원</v-card-text>
               <v-expand-transition>
                 <div v-if="hover" class="d-flex trantision-fast-in-fast-out red v-card-reveal display-3 white--text" style="height: 100%">
-                  <v-btn @click="dialog=true" outlined="" color="white">detail</v-btn>
+                  <v-btn @click="openDialog" outlined="" color="white">detail</v-btn>
                 </div>
               </v-expand-transition>
               <v-btn absolute="" color="red" class="white--text d-none d-sm-flex" fab large left top>
@@ -79,6 +79,9 @@
         dialog = false
         dialogFalse() {
           this.dialog=false
+        }
+        openDialog() {
+          this.dialog=true
         }
     }
 </script>
