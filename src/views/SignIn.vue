@@ -125,10 +125,10 @@
         signIn():void {
             this.$axios.post("/signIn" , this.signInObj)
             .then( (r:AxiosResponse) => {
-                console.log(r.data);
                 this.$toast(this.$serverMsg[r.data.msg]);
                 if(r.data.token) {
                     this.$store.dispatch('setToken' , r.data.token);
+                    r.data.user_.password=''; // 암호화된 패스워드 초기화
                     this.$store.dispatch('setUser' , r.data.user_);
                 }
                 this.$router.push('/')
