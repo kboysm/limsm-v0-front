@@ -61,6 +61,7 @@
     import ProductOrder from './productOrder.vue'
     import OneToOneInquiry from '../question/OneToOneInquiry.vue'
     import ProductReview from './ProductReview.vue'
+    import {AxiosError , AxiosResponse} from 'axios'
     interface Product {
       id: number; // pk
 
@@ -103,7 +104,18 @@
         text= 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 
         addCart():void {
-          alert('add cart')
+          if(!this.$store.state.token){
+            alert('로그인 후 이용해주세요.')
+          }
+          else {
+            this.$axios.post("/carts/"+this.$store.state.user.carts.id , this.product)
+            .then( (r: AxiosResponse) => {
+              alert(r.data);
+            })
+            .catch( (e:AxiosError) => {
+              alert(e);
+            })
+          }
         }
     }
 </script>

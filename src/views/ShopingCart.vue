@@ -85,27 +85,25 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
+    import {AxiosError , AxiosResponse} from 'axios'
 
-    interface itemList {
+    interface itemList extends Object {
             id: number;
+            imgUrl: string;
             name: string;
-            price: number;
+            description: string;
+            quantity: number;
             grade: number;
+            salesQuantity: number;
+            price: number;
+            createdAt: Date;
+            updatedAt: Date;
             purchaseQuantity: number;
           }
 
     @Component<ShopingCart>({
       created() {
-        for(let i =1 ; i<4 ; i++) {
-          let cloneProduct = {
-            id: i,
-            name: '테스트 컴퓨터 '+i,
-            price: 300000,
-            grade: 5,
-            purchaseQuantity: 1+i
-          }
-          this.desserts.push(cloneProduct);
-        }
+        this.getUserCart();
       }
     })
     export default class ShopingCart extends Vue {
@@ -122,20 +120,14 @@
           { text: '수량', value: 'purchaseQuantity' },
           { text: 'Actions', value: 'actions', sortable: false },
         ]
-        desserts= [
-          {
-            id: 0,
-            name: '테스트 컴퓨터',
-            price: 300000,
-            grade: 5,
-            purchaseQuantity: 1
-          },
+        desserts: itemList[] = [
+          
         ]
         deliveryFee = 3000
 
 
         plusPurchaseQuantity( item: itemList ) {
-          item['purchaseQuantity']++;
+            item['purchaseQuantity']++;
         }
         minusPurchaseQuantity( item: itemList ) {
           if( item['purchaseQuantity'] === 1 ) {
@@ -152,6 +144,24 @@
             totalPrice += (item.price * item.purchaseQuantity)
           })
           return totalPrice;
+        }
+        async getUserCart() {
+          await this.$axios.get("/carts/"+this.$store.state.user.carts.id )
+            .then( (r: AxiosResponse) => {
+              this.desserts = r.data[0].cartProduct;
+            })
+            .catch( (e:AxiosError) => {
+              console.log(e)
+            })
+        }
+        async saveUserCart() {
+          await this.$axios.post("/carts/save" , this.desserts )
+            .then( (r: AxiosResponse) => {
+              console.log(r.data)
+            })
+            .catch( (e:AxiosError) => {
+              console.log(e)
+            })
         }
     }
 </script>
