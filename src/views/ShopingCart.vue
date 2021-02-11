@@ -8,7 +8,7 @@
                 <v-col cols="12">
                     <v-data-table
                         :headers="headers"
-                        :items="desserts"
+                        :items="cartList"
                         item-key="name"
                         class="elevation-1 mx-2"
                     >
@@ -32,19 +32,19 @@
                         </v-icon>
                         <v-icon
                           small
-                          @click="deleteItem(item)"
+                          @click="deleteBtn(item)"
                         >
                           mdi-delete
                         </v-icon>
                       </template>
-                      <template v-slot:no-data>
+                      <!-- <template v-slot:no-data>
                         <v-btn
                           color="primary"
                           @click="initialize"
                         >
                           Reset
                         </v-btn>
-                      </template>
+                      </template> -->
                     </v-data-table>
                 </v-col>
                 <v-col cols="12">
@@ -55,7 +55,7 @@
                         >
                             <v-list-item>
                             <v-list-item-content>
-                                <v-list-item-title>총 {{this.desserts.length}}개의 상품금액: <span class="red--text">{{totalPrice.toLocaleString('ko-KR')}}원</span></v-list-item-title>
+                                <v-list-item-title>총 {{this.cartList.length}}개의 상품금액: <span class="red--text">{{totalPrice.toLocaleString('ko-KR')}}원</span></v-list-item-title>
                             </v-list-item-content>
                             </v-list-item>
 
@@ -86,7 +86,6 @@
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
     import {AxiosError , AxiosResponse} from 'axios'
-
     interface itemList extends Object {
             id: number;
             imgUrl: string;
@@ -103,7 +102,10 @@
 
     @Component<ShopingCart>({
       created() {
-        this.getUserCart();
+        this.getCartList()
+      },
+      beforeDestroy() {
+        this.saveUserCart()
       }
     })
     export default class ShopingCart extends Vue {
@@ -120,44 +122,48 @@
           { text: '수량', value: 'purchaseQuantity' },
           { text: 'Actions', value: 'actions', sortable: false },
         ]
-        desserts: itemList[] = [
-          
-        ]
         deliveryFee = 3000
-
+        cartList:Array<itemList>  = []
 
         plusPurchaseQuantity( item: itemList ) {
-            item['purchaseQuantity']++;
+          item['purchaseQuantity']++;
         }
         minusPurchaseQuantity( item: itemList ) {
-          if( item['purchaseQuantity'] === 1 ) {
-            this.desserts.splice( this.desserts.indexOf(item) , 1 )
-          }
           item['purchaseQuantity']--;
+          if(item['purchaseQuantity'] === 0) {
+            this.cartList.splice( this.cartList.indexOf(item) , 1)
+            this.$store.dispatch('setCartList' , this.cartList)
+          }
         }
-        deleteItem( item: itemList ) {
-          this.desserts.splice( this.desserts.indexOf(item) , 1 )
+        
+        async deleteBtn( item: itemList ) { // delete 버튼을 눌렀을때
+          this.cartList.splice( this.cartList.indexOf(item) , 1)
+          this.$store.dispatch('setCartList' , this.cartList)
         }
         get totalPrice(): number {
           let totalPrice: number = 0
-          this.desserts.forEach( item => {
-            totalPrice += (item.price * item.purchaseQuantity)
+          if(this.cartList !== []){
+
+            this.cartList.forEach( (item:itemList) => {
+              totalPrice += (item.price * item.purchaseQuantity)
           })
+            }
           return totalPrice;
         }
-        async getUserCart() {
-          await this.$axios.get("/carts/"+this.$store.state.user.carts.id )
+        async saveUserCart() {
+          await this.$axios.post("/carts/save/"+this.$store.state.user.carts.id , this.cartList )
             .then( (r: AxiosResponse) => {
-              this.desserts = r.data[0].cartProduct;
+              console.log(r.data.cartProduct)
+              // this.$store.dispatch('setCartList' , r.data.cartProduct)
             })
             .catch( (e:AxiosError) => {
               console.log(e)
             })
         }
-        async saveUserCart() {
-          await this.$axios.post("/carts/save" , this.desserts )
+        async getCartList() {
+          await this.$axios.get("/carts/"+this.$store.state.user.carts.id )
             .then( (r: AxiosResponse) => {
-              console.log(r.data)
+              this.cartList = r.data[0].cartProduct
             })
             .catch( (e:AxiosError) => {
               console.log(e)

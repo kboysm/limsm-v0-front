@@ -29,7 +29,7 @@
                 <v-list-item router to="/shopingCart">
                     <v-list-item-action>
                         <v-badge color="yellow">
-                            <template v-slot:badge>1</template>
+                            <template v-slot:badge>{{$store.state.cartList.length}}</template>
                             <v-icon>fas fa-shopping-cart</v-icon>
                         </v-badge>
                     </v-list-item-action>

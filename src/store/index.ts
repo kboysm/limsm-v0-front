@@ -5,6 +5,7 @@ Vue.use(Vuex)
 interface State {
     token : string;
     user : User;
+    cartList: Array<cartList> | [];
 }
 
 interface User {
@@ -18,6 +19,20 @@ interface User {
     updatedAt: Date;
 }
 
+interface cartList extends Object {
+    id: number;
+    imgUrl: string;
+    name: string;
+    description: string;
+    quantity: number;
+    grade: number;
+    salesQuantity: number;
+    price: number;
+    createdAt: Date;
+    updatedAt: Date;
+    purchaseQuantity: number;
+  }
+
 const user:any = ():any => {
     const stringUser: string | null = localStorage.getItem('user');
     if(stringUser) return JSON.parse( stringUser )
@@ -26,10 +41,19 @@ const user:any = ():any => {
     }
 }
 
+const cartList = () => {
+    const cartList: string | null = localStorage.getItem('cart');
+    if(cartList) return JSON.parse( cartList )
+    else{
+        return []
+    }
+}
+
 const store: StoreOptions<State> = {
     state: {
         token: localStorage.getItem('token') || '',
-        user: user()
+        user: user(),
+        cartList: cartList()
     },
     mutations: {
         setToken(state: State , token: string) {
@@ -39,7 +63,14 @@ const store: StoreOptions<State> = {
         setUser(state: State , user: User) {
             localStorage.setItem('user' , JSON.stringify(user))
             state.user = user
+        },
+        
+        setCartList(state: State , cartList: Array<cartList>) {
+            localStorage.setItem('cart' , JSON.stringify(cartList))
+            state.cartList= cartList 
         }
+
+
     },
     actions: {
         setToken({state, getters , dispatch , commit}:ActionContext<State, State>, token:string) {
@@ -47,11 +78,15 @@ const store: StoreOptions<State> = {
         },
         setUser({state, getters , dispatch , commit}:ActionContext<State, State>, user: User) {
             commit('setUser' , user);
-        }
+        },
+        setCartList({state, getters , dispatch , commit}:ActionContext<State, State>, cartList: Array<cartList>) {
+            commit('setCartList' , cartList);
+        },
     },
     getters: {
         getToken: (state: State) => state.token,
-        getUser: (state: State) => state.user
+        getUser: (state: State) => state.user,
+        getCartList: (state: State) => state.cartList,
     }
 }
 

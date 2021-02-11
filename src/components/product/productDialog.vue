@@ -84,6 +84,19 @@
       updatedAt: Date; 
       }
 
+    interface cartList extends Object {
+    id: number;
+    imgUrl: string;
+    name: string;
+    description: string;
+    quantity: number;
+    grade: number;
+    salesQuantity: number;
+    price: number;
+    createdAt: Date;
+    updatedAt: Date;
+    purchaseQuantity: number;
+  }
     @Component({
       components: {
         ProductOrder , 
@@ -104,13 +117,19 @@
         text= 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 
         addCart():void {
+          const cartProductNameList = this.$store.state.cartList.map( (item:cartList) => item.name)
+          if(cartProductNameList.includes(this.product.name)) {
+            alert('이미 장바구니에 존재하는 상품입니다.')
+            return;
+          }
           if(!this.$store.state.token){
             alert('로그인 후 이용해주세요.')
           }
           else {
             this.$axios.post("/carts/"+this.$store.state.user.carts.id , this.product)
             .then( (r: AxiosResponse) => {
-              alert(r.data);
+              this.$store.dispatch('setCartList' , r.data.cartProduct);
+              alert('장바구니 상품 추가!')
             })
             .catch( (e:AxiosError) => {
               alert(e);

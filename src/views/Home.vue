@@ -54,6 +54,9 @@ interface Product {
  },
  created() {
    this.getProductList();
+ },
+ mounted() {
+   this.getCartList();
  }
 })
 export default class Home extends Vue {
@@ -81,6 +84,16 @@ export default class Home extends Vue {
             }).catch((e: AxiosError) => {
                 console.error(e);
             })
+  }
+
+  async getCartList() {
+    await this.$axios.get("/carts/"+this.$store.state.user.carts.id )
+      .then( (r: AxiosResponse) => {
+        this.$store.dispatch('setCartList' , r.data[0].cartProduct);
+      })
+      .catch( (e:AxiosError) => {
+        console.log(e)
+      })
   }
 }
 </script>
