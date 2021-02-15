@@ -108,7 +108,10 @@
                     <v-card-title>최근 본 상품</v-card-title>
                     <v-divider />
                     <v-row class="pa-3">
-                        <v-col cols="12" xl="3" lg="4" md="6" sm="6" xs="6">
+                        <v-col cols="12" xl="3" lg="4" md="6" sm="6" xs="6" v-for=" (item,index) in viewProductList" :key="index">
+                            <product-card :product="item"></product-card>
+                        </v-col>
+                        <!-- <v-col cols="12" xl="3" lg="4" md="6" sm="6" xs="6">
                             <product-card></product-card>
                         </v-col>
                         <v-col cols="12" xl="3" lg="4" md="6" sm="6" xs="6">
@@ -116,10 +119,7 @@
                         </v-col>
                         <v-col cols="12" xl="3" lg="4" md="6" sm="6" xs="6">
                             <product-card></product-card>
-                        </v-col>
-                        <v-col cols="12" xl="3" lg="4" md="6" sm="6" xs="6">
-                            <product-card></product-card>
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                 </v-card>
             </v-col>
@@ -131,6 +131,29 @@
     import { Component, Vue } from 'vue-property-decorator';
     import ProductCard from '@/components/product/mypageProductCard.vue'
     import { AxiosResponse} from 'axios'
+
+interface Product {
+      id: number; // pk
+
+      imgUrl: string; // 이미지
+
+      name: string; // 상품명
+
+      description: string; // 상품 설명
+
+      quantity: number; // 제품 수량
+      
+      grade: number; // 평점 총점
+      
+      salesQuantity: number; // 판매수량
+      
+      price: number; // 결제금액
+
+      createdAt: Date; //상품 등록일
+      
+      updatedAt: Date; 
+      }
+
     @Component<MyPage>({
         components:{
             ProductCard
@@ -141,12 +164,21 @@
     })
     export default class MyPage extends Vue {
         user= {}
+        viewProductList: Array<Product> = []
         $axios: any;
 
         async getUser() {
-            await this.$axios.get('/user/4')
+            await this.$axios.get('/user/'+this.$store.state.user.id)
             .then( (r: AxiosResponse) => {
-                console.log(r);
+                Object.assign(this.user , r.data.user);
+                for(let i=0 ; i<4 ; i++) {
+                    let search_char = r.data.user.viewRecentProduct[i]
+                    r.data.viewProductList.forEach( (item: Product) => {
+                        if(""+item.id === search_char) {
+                            this.viewProductList.push(item);
+                        }
+                    });
+                }
             })
         }
     }

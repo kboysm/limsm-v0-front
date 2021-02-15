@@ -66,6 +66,7 @@ export default class Home extends Vue {
   }
   productList = []
   searchItem = ''
+  
   get viewProductList(  ) {
     if(!this.searchItem) {
       return this.productList

@@ -82,6 +82,13 @@
         }
         openDialog() {
           this.dialog=true
+          this.ViewUserProduct();
+        }
+        async ViewUserProduct() {
+          await this.$axios.get(`/user/${this.$store.state.user.id}/${this.product.id}`)
+          .then( r => {
+            console.log(r);
+          })
         }
     }
 </script>
