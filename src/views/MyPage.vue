@@ -14,72 +14,17 @@
                         </v-col>
                         <v-col cols="12" md="8" class="pa-5">
                             <v-form>
-                                <v-text-field disabled hide-details label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
-                                <v-text-field hide-details label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
-                                <v-text-field hide-details label="Address" name="Address" prepend-icon="home" type="text" color="red"></v-text-field>
-                                <v-text-field disabled hide-details label="Name" name="Name" prepend-icon="fas fa-user" type="text" color="red"></v-text-field>
-                                <v-text-field hide-details label="Phone" name="Phone" prepend-icon="fas fa-phone" type="text" color="red"></v-text-field>
+                                <v-text-field v-model="user.email" disabled hide-details label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
+                                <v-text-field disabled hide-details label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
+                                <v-text-field v-model="user.address" disabled hide-details label="Address" name="Address" prepend-icon="home" type="text" color="red"></v-text-field>
+                                <v-text-field v-model="user.name" disabled hide-details label="Name" name="Name" prepend-icon="fas fa-user" type="text" color="red"></v-text-field>
+                                <v-text-field v-model="user.tel" disabled hide-details label="Phone" name="Phone" prepend-icon="fas fa-phone" type="text" color="red"></v-text-field>
                             </v-form>
                         </v-col>
                     </v-row>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="6">
-                <v-card class="mx-auto my-12" height="400" min-width="430" width="600">
-                    <v-card-title>주문 정보</v-card-title>
-                    <v-divider />
-                    <v-row>
-                        <v-col cols="12" md="6">
-                            <v-list>
-                                <v-list-item>
-                                    <v-list-item-content>배송지 : </v-list-item-content>
-                                    <v-list-item-content>서울특별시 강남구 강남동 강남아파트 101동 101호</v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>배송자 : </v-list-item-content>
-                                    <v-list-item-content>박찬호</v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>전화번호 : </v-list-item-content>
-                                    <v-list-item-content>010-1111-1111</v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>결제금액 : </v-list-item-content>
-                                    <v-list-item-content>50,000원</v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                        <v-col>
-                            <v-divider vertical></v-divider>
-                        </v-col>
-                        <v-col cols="12" md="5">
-                            <v-list>
-                                <v-list-item>
-                                    <v-list-item-content>상품1 : </v-list-item-content>
-                                    <v-list-item-content>테스트 상품1</v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>상품2 : </v-list-item-content>
-                                    <v-list-item-content>테스트 상품2</v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>상품3 : </v-list-item-content>
-                                    <v-list-item-content>테스트 상품3</v-list-item-content>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-content>상품4 : </v-list-item-content>
-                                    <v-list-item-content>테스트 상품4</v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                        </v-col>
-                    </v-row>
-                    <div style="line-height:110%;">
-                        <br><br>
-                    </div>
-                </v-card>
-            </v-col>
-        </v-row>
-        <v-row>
+            
             <v-col cols="12" md="6">
                 <v-card class="mx-auto my-12" max-height="1200" min-width="430" width="600">
                     <v-card-title>1:1문의</v-card-title>
@@ -101,6 +46,67 @@
                             </v-expansion-panels>
                         </v-col>
                     </v-row>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="6">
+                <v-card class="mx-auto my-12" min-width="430" width="600">
+                    <v-card-title>주문 정보</v-card-title>
+                    <v-divider />
+                    <v-row>
+                        <v-col cols="12">
+                            <v-list>
+                                <v-list-item>
+                                    <v-list-item-content>배송지 : </v-list-item-content>
+                                    <v-list-item-content>{{orderInfo.destination}}</v-list-item-content>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-content>배송자 : </v-list-item-content>
+                                    <v-list-item-content>{{orderInfo.name}}</v-list-item-content>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-content>전화번호 : </v-list-item-content>
+                                    <v-list-item-content>{{orderInfo.tel}}</v-list-item-content>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-content>결제금액 : </v-list-item-content>
+                                    <v-list-item-content>{{orderInfo.payment.toLocaleString('ko-KR')}}원</v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </v-col>
+                        
+                        <v-col cols="12">
+                            <v-list>
+                                <v-list-item v-for=" (item,idx) in orderInfo.buyProduct" :key="idx">
+                                    <v-list-item-content>
+                                        <v-list-item-title>
+                                            상품_{{idx}}, {{item.name}}
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle>
+                                            수량:{{item.purchaseQuantity}}
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                    <!-- <v-list-item-content>{{item.name}}</v-list-item-content> -->
+                                </v-list-item>
+                                <!-- <v-list-item>
+                                    <v-list-item-content>상품2 : </v-list-item-content>
+                                    <v-list-item-content>테스트 상품2</v-list-item-content>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-content>상품3 : </v-list-item-content>
+                                    <v-list-item-content>테스트 상품3</v-list-item-content>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-content>상품4 : </v-list-item-content>
+                                    <v-list-item-content>테스트 상품4</v-list-item-content>
+                                </v-list-item> -->
+                            </v-list>
+                        </v-col>
+                    </v-row>
+                    <div style="line-height:110%;">
+                        <br><br>
+                    </div>
                 </v-card>
             </v-col>
             <v-col cols="12" md="6">
@@ -165,13 +171,16 @@ interface Product {
     export default class MyPage extends Vue {
         user= {}
         viewProductList: Array<Product> = []
+        orderInfo= {}
         $axios: any;
 
         async getUser() {
             await this.$axios.get('/user/'+this.$store.state.user.id)
             .then( (r: AxiosResponse) => {
-                Object.assign(this.user , r.data.user);
-                for(let i=0 ; i<4 ; i++) {
+                this.user = r.data.user
+                this.orderInfo = r.data.orderInfo
+                console.log(r.data);
+                for(let i=0 ; i<r.data.viewProductList.length ; i++) {
                     let search_char = r.data.user.viewRecentProduct[i]
                     r.data.viewProductList.forEach( (item: Product) => {
                         if(""+item.id === search_char) {

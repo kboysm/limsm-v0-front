@@ -6,6 +6,8 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import './plugins/axios'
 import  serverMsg  from './serverMsg/index'
+import vueMoment from 'vue-moment' 
+Vue.use(vueMoment)
 
 
 Vue.prototype.$serverMsg = serverMsg;
