@@ -8,9 +8,9 @@
                     <v-card-title>주문자 정보</v-card-title>
                     <hr>
                     <v-form>
-                        <v-text-field v-model="userInfo.name" label="이름"></v-text-field>
+                        <v-text-field disabled v-model="userInfo.name" label="이름"></v-text-field>
                         <v-text-field v-model="userInfo.tel" label="연락처"></v-text-field>
-                        <v-text-field v-model="userInfo.mail" label="메일주소"></v-text-field>
+                        <v-text-field disabled v-model="userInfo.email" label="메일주소"></v-text-field>
                     </v-form>
                 </v-card>
             </v-col>
@@ -24,7 +24,6 @@
                         <v-text-field v-model="deliveryInfo.name" label="이름"></v-text-field>
                         <v-text-field v-model="deliveryInfo.address" label="주소"></v-text-field>
                         <v-text-field v-model="deliveryInfo.tel" label="연락처"></v-text-field>
-                        <v-text-field v-model="deliveryInfo.deliveryRequest" label="배송시 요청사항"></v-text-field>
                     </v-form>
                 </v-card>
             </v-col>
@@ -46,28 +45,29 @@
                 <v-card class="mx-4 px-6 py-6 flex justify-center" max-width="600">
                     <v-card-title>최종결제 정보</v-card-title><hr>
                     <v-row rows="2">
-                        <v-col>상품금액: </v-col>
+                        <v-col>상품금액: {{product.price.toLocaleString('ko-KR')}}원 </v-col>
                     </v-row>
                     <v-row rows="2">
-                        <v-col>할인금액: </v-col>
+                        <v-col>할인금액: 0원</v-col>
                     </v-row>
                     <v-row rows="2">
-                        <v-col>배송비: </v-col>
+                        <v-col>배송비: 3,000원 </v-col>
                     </v-row>
                     <hr>
                     <v-row rows="2">
-                        <v-col class="flex"><span class="red--text text-h5 font-weight-medium"> 결제금액 </span> <span class="text-h5"> 123123123</span></v-col>
+                        <v-col class="flex"><span class="red--text text-h5 font-weight-medium"> 결제금액 </span> <span class="text-h5"> 
+                            {{(product.price+3000).toLocaleString('ko-KR')}}원</span></v-col>
                     </v-row>
                     <v-row rows="4">
                         <v-col class="">
-                            <v-btn width="70%" height="50px">결제하기</v-btn>
+                            <v-btn @click="purchaseProduct" :disabled="btnTrig" width="70%" height="50px">결제하기</v-btn>
                         </v-col>
                     </v-row>
                 </v-card>
             </v-col>
             <v-col cols="12" lg="6" md="6">
                 <v-card class="mx-4 px-6" color="#ECEFF1" max-width="600">
-                    <v-card-title>결제수단 선택</v-card-title><hr>
+                    <v-card-title>결제수단</v-card-title><hr>
                     <v-card-actions>
                         <v-btn>kakao</v-btn>
                     </v-card-actions>
@@ -77,11 +77,11 @@
                 <v-card class="mx-4 px-6" max-width="600">
                     <v-card-title>약관</v-card-title><hr>
                     <v-container>
-                        <v-checkbox label="(필수) 개인정보 수집 및 이용 동의">
+                        <v-checkbox v-model="terms.collection" label="(필수) 개인정보 수집 및 이용 동의">
                         </v-checkbox>
-                        <v-checkbox label="(필수) 개인정보 제3자 제공동의">
+                        <v-checkbox v-model="terms.thirdParty" label="(필수) 개인정보 제3자 제공동의">
                         </v-checkbox>
-                        <v-checkbox label="(필수) G마켓 구매회원 약관 동의">
+                        <v-checkbox v-model="terms.purchasingMember" label="(필수) 구매회원 약관 동의">
                         </v-checkbox>
                     </v-container>
                 </v-card>
@@ -119,19 +119,41 @@
         @Prop() product!: Product
         baseUrl = process.env.VUE_APP_BASE_URL
         userInfo = {
-            name:'',
+            name:this.$store.state.user.name,
             tel:'',
-            mail: ''
+            email: this.$store.state.user.email
         }
         deliveryInfo = {
             name:'',
             tel:'',
-            address:'',
-            deliveryRequest:''
+            address:''
+        }
+        terms = {
+            collection:false,
+            thirdParty:false,
+            purchasingMember:false
         }
         sameInfo() {
             this.deliveryInfo.name = this.userInfo.name;
             this.deliveryInfo.tel = this.userInfo.tel;
+        }
+        get btnTrig() {
+            if(!(this.terms.collection && this.terms.thirdParty && this.terms.purchasingMember)) {
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        purchaseProduct() {
+            if(!this.userInfo.tel) {
+                alert('주문자 연락처를 입력하여주세요')
+                return
+            }
+            if(!this.deliveryInfo.name || !this.deliveryInfo.tel || !this.deliveryInfo.address) {
+                alert('배송지 정보를 모두 입력하여 주세요')
+                return
+            }
         }
     }
 </script>
