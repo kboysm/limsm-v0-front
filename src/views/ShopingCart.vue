@@ -47,7 +47,18 @@
                       </template> -->
                     </v-data-table>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="12" lg="6" md="6">
+                <v-card class="mx-4 px-6" max-width="600">
+                    <v-card-title class="flex justify-space-between">배송지 정보 
+                    </v-card-title><hr>
+                    <v-form>
+                        <v-text-field v-model="deliveryInfo.name" label="이름"></v-text-field>
+                        <v-text-field v-model="deliveryInfo.destination" label="주소"></v-text-field>
+                        <v-text-field v-model="deliveryInfo.tel" label="연락처"></v-text-field>
+                    </v-form>
+                </v-card>
+            </v-col>
+                <v-col cols="12"  lg="6" md="6">
                       <v-card
                             class="mx-auto pa-5"
                             max-width="400"
@@ -75,7 +86,7 @@
                             </v-list-item-content>
                             </v-list-item>
                             <v-list-item-action>
-                                <v-btn class="white--text" color="red" outlined>상품 주문</v-btn>
+                                <v-btn @click="buyCart" class="white--text" color="red" outlined>상품 주문</v-btn>
                             </v-list-item-action>
                       </v-card>
                 </v-col>
@@ -123,6 +134,11 @@
           { text: 'Actions', value: 'actions', sortable: false },
         ]
         deliveryFee = 3000
+        deliveryInfo = {
+            name:this.$store.state.user.name,
+            tel:'',
+            destination:this.$store.state.user.address
+        }
         cartList:Array<itemList>  = []
 
         plusPurchaseQuantity( item: itemList ) {
@@ -163,11 +179,21 @@
         async getCartList() {
           await this.$axios.get("/carts/"+this.$store.state.user.carts.id )
             .then( (r: AxiosResponse) => {
+              console.log(r.data)
               this.cartList = r.data[0].cartProduct
             })
             .catch( (e:AxiosError) => {
               console.log(e)
             })
+        }
+        async buyCart() {
+          await this.$axios.post(`/carts/buy/${this.$store.state.user.carts.id}/${this.$store.state.user.id}`, {
+              deliveryInfo: this.deliveryInfo,
+              deliveryPrice: this.deliveryFee
+          })
+          .then( r=> {
+            console.log(r);
+          })
         }
     }
 </script>
