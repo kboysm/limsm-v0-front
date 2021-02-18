@@ -9,6 +9,7 @@ import  serverMsg  from './serverMsg/index'
 import vueMoment from 'vue-moment' 
 Vue.use(vueMoment)
 
+Vue.prototype.$eventBus = new Vue();
 
 Vue.prototype.$serverMsg = serverMsg;
 Vue.config.productionTip = false

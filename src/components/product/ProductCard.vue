@@ -69,6 +69,9 @@
       },
       created() {
         this.rating = Math.ceil(this.product.grade/this.product.salesQuantity *10)/10
+        this.$eventBus.$on('dialog_false' , (el:boolean) => {
+          this.dialog = el;
+        });
       }
     })
     export default class ProductCard extends Vue {
@@ -77,6 +80,7 @@
         baseUrl = process.env.VUE_APP_BASE_URL
         rating = 0
         dialog = false
+        $eventBus: any;
         dialogFalse() {
           this.dialog=false
         }

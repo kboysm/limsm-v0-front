@@ -22,7 +22,7 @@
                     </v-card-title><hr>
                     <v-form>
                         <v-text-field v-model="deliveryInfo.name" label="이름"></v-text-field>
-                        <v-text-field v-model="deliveryInfo.address" label="주소"></v-text-field>
+                        <v-text-field v-model="deliveryInfo.destination" label="주소"></v-text-field>
                         <v-text-field v-model="deliveryInfo.tel" label="연락처"></v-text-field>
                     </v-form>
                 </v-card>
@@ -126,13 +126,14 @@
         deliveryInfo = {
             name:'',
             tel:'',
-            address:''
+            destination:''
         }
         terms = {
             collection:false,
             thirdParty:false,
             purchasingMember:false
         }
+        $eventBus: any;
         sameInfo() {
             this.deliveryInfo.name = this.userInfo.name;
             this.deliveryInfo.tel = this.userInfo.tel;
@@ -150,10 +151,24 @@
                 alert('주문자 연락처를 입력하여주세요')
                 return
             }
-            if(!this.deliveryInfo.name || !this.deliveryInfo.tel || !this.deliveryInfo.address) {
+            if(!this.deliveryInfo.name || !this.deliveryInfo.tel || !this.deliveryInfo.destination) {
                 alert('배송지 정보를 모두 입력하여 주세요')
                 return
             }
+            this.$axios.post(`/product/buy/${this.$store.state.user.id}/${this.product.id}`,{
+                userInfo:this.userInfo,
+                deliveryInfo:this.deliveryInfo,
+                deliveryPrice:3000
+            })
+            .then( r => {
+                console.log(r.data)
+                if(r.data.result) {
+                    this.$eventBus.$emit('dialog_false',false);
+                }else {
+                    alert(r.data.msg);
+                }
+            })
+            
         }
     }
 </script>
