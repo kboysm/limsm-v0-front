@@ -48,7 +48,7 @@
                       <v-img :src="product.description"></v-img>
                     </v-card>
                     <product-order :product="product" v-else-if="item === '바로구매'"></product-order>
-                    <one-to-one-inquiry v-else-if="item === '1:1문의'"></one-to-one-inquiry>
+                    <one-to-one-inquiry :product="product" v-else-if="item === '1:1문의'"></one-to-one-inquiry>
                     <product-review v-else-if="item === '구매후기'"></product-review>
                   </v-tab-item>
                 </v-tabs-items>

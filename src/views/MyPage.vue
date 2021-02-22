@@ -71,7 +71,7 @@
                                 </v-list-item>
                                 <v-list-item>
                                     <v-list-item-content>결제금액 : </v-list-item-content>
-                                    <v-list-item-content>{{orderInfo.payment.toLocaleString('ko-KR')}}원</v-list-item-content>
+                                    <v-list-item-content>{{numberComma(orderInfo.payment)}}원</v-list-item-content>
                                 </v-list-item>
                             </v-list>
                         </v-col>
@@ -173,6 +173,11 @@ interface Product {
         viewProductList: Array<Product> = []
         orderInfo= {}
         $axios: any;
+
+         numberComma( item:number ) {
+                let numberData = new Number( item )
+            return numberData.toLocaleString('ko-KR')
+        }
 
         async getUser() {
             await this.$axios.get('/user/'+this.$store.state.user.id)

@@ -10,14 +10,36 @@
         </v-sheet>
         <br>
         <v-card-actions>
-            <v-btn elevation="5" text outlined @click="testFunc">제출</v-btn>
+            <v-btn elevation="5" text outlined @click="submit">제출</v-btn>
         </v-card-actions>
     </v-card>
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
+    import { Component, Vue , Prop} from 'vue-property-decorator';
     import { VueEditor } from "vue2-editor";
+
+  interface Product {
+      id: number; // pk
+
+      imgUrl: string; // 이미지
+
+      name: string; // 상품명
+
+      description: string; // 상품 설명
+
+      quantity: number; // 제품 수량
+      
+      grade: number; // 평점 총점
+      
+      salesQuantity: number; // 판매수량
+      
+      price: number; // 결제금액
+
+      createdAt: Date; //상품 등록일
+      
+      updatedAt: Date; 
+      }
 
     @Component<OneToOneInquiry>({
         components: { 
@@ -25,10 +47,14 @@
         },
     })
     export default class OneToOneInquiry extends Vue {
+                @Prop() product!: Product
         content= "<h1>제목: </h1>"
         
-        testFunc() {
-            console.log(this.content)
+        submit() {
+            this.$axios.post(`/question/${this.product.id}/${this.$store.state.user.id}`,{content:this.content})
+            .then(r => {
+                console.log(r)
+            })
         }
     }
 </script>
