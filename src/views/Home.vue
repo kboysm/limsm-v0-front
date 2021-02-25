@@ -56,7 +56,9 @@ interface Product {
    this.getProductList();
  },
  mounted() {
-   this.getCartList();
+   if( this.$store.state.user.id ) {
+     this.getCartList();
+   }
  }
 })
 export default class Home extends Vue {
