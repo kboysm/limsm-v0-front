@@ -12,13 +12,13 @@
                                 <v-btn class="red--text text--accent-3 mt-3" @click="updateMode = !updateMode" outlined> 수정하기 </v-btn>
                             </div>
                             <div class=" text-center" v-else>
-                                <v-btn class="red--text text--accent-3 mt-3" @click="updateMode = !updateMode" outlined> 수정완료 </v-btn>
+                                <v-btn class="red--text text--accent-3 mt-3" @click="updateUser" outlined> 수정완료 </v-btn>
                             </div>
                         </v-col>
                         <v-col cols="12" md="8" class="pa-5">
                             <v-form>
                                 <v-text-field v-model="user.email" disabled hide-details label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
-                                <v-text-field :disabled="!updateMode" hide-details label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
+                                <v-text-field v-model="user.password" :disabled="!updateMode" hide-details label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
                                 <v-text-field v-model="user.address" :disabled="!updateMode" hide-details label="Address" name="Address" prepend-icon="home" type="text" color="red"></v-text-field>
                                 <v-text-field v-model="user.name" :disabled="!updateMode" hide-details label="Name" name="Name" prepend-icon="fas fa-user" type="text" color="red"></v-text-field>
                                 <v-text-field v-model="user.tel" :disabled="!updateMode" hide-details label="Phone" name="Phone" prepend-icon="fas fa-phone" type="text" color="red"></v-text-field>
@@ -199,7 +199,9 @@ interface Question {
         async getUser() {
             await this.$axios.get('/user/'+this.$store.state.user.id)
             .then( (r: AxiosResponse) => {
+                r.data.user.password= '';
                 this.user = r.data.user
+                
                 if(r.data.orderInfo) {
                     this.orderInfo = r.data.orderInfo
                 }
@@ -225,6 +227,14 @@ interface Question {
                         this.questionList.push( {title , content})
                     })
                 }
+            })
+        }
+
+        async updateUser() {
+            await this.$axios.post('/user/'+this.$store.state.user.id , this.user)
+            .then( (r: AxiosResponse) => {
+                console.log(r.data)
+                this.updateMode = false
             })
         }
     }
