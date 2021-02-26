@@ -8,17 +8,20 @@
                     <v-row>
                         <v-col cols="12" md="4" class="pa-5">
                             <v-img src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
-                            <div class=" text-center">
-                                <v-btn class="red--text text--accent-3 mt-3" outlined> 수정하기 </v-btn>
+                            <div class=" text-center" v-if="!updateMode">
+                                <v-btn class="red--text text--accent-3 mt-3" @click="updateMode = !updateMode" outlined> 수정하기 </v-btn>
+                            </div>
+                            <div class=" text-center" v-else>
+                                <v-btn class="red--text text--accent-3 mt-3" @click="updateMode = !updateMode" outlined> 수정완료 </v-btn>
                             </div>
                         </v-col>
                         <v-col cols="12" md="8" class="pa-5">
                             <v-form>
                                 <v-text-field v-model="user.email" disabled hide-details label="Email" name="Email" prepend-icon="email" type="text" color="red"></v-text-field>
-                                <v-text-field disabled hide-details label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
-                                <v-text-field v-model="user.address" disabled hide-details label="Address" name="Address" prepend-icon="home" type="text" color="red"></v-text-field>
-                                <v-text-field v-model="user.name" disabled hide-details label="Name" name="Name" prepend-icon="fas fa-user" type="text" color="red"></v-text-field>
-                                <v-text-field v-model="user.tel" disabled hide-details label="Phone" name="Phone" prepend-icon="fas fa-phone" type="text" color="red"></v-text-field>
+                                <v-text-field :disabled="!updateMode" hide-details label="Password" name="Password" prepend-icon="lock" type="password" color="red"></v-text-field>
+                                <v-text-field v-model="user.address" :disabled="!updateMode" hide-details label="Address" name="Address" prepend-icon="home" type="text" color="red"></v-text-field>
+                                <v-text-field v-model="user.name" :disabled="!updateMode" hide-details label="Name" name="Name" prepend-icon="fas fa-user" type="text" color="red"></v-text-field>
+                                <v-text-field v-model="user.tel" :disabled="!updateMode" hide-details label="Phone" name="Phone" prepend-icon="fas fa-phone" type="text" color="red"></v-text-field>
                             </v-form>
                         </v-col>
                     </v-row>
@@ -29,22 +32,25 @@
                 <v-card class="mx-auto my-12" max-height="1200" min-width="430" width="600">
                     <v-card-title>1:1문의</v-card-title>
                     <v-divider />
-                    <v-row justify="center">
+                    <v-row justify="center" v-if="questionList[0]">
                         <v-col cols="12" md="10">
                             <v-expansion-panels focusable >
                                 <v-expansion-panel
-                                v-for="(item,i) in 5"
+                                v-for="(item,i) in questionList"
                                 :key="i"
                                 >
                                 <v-expansion-panel-header>
-                                    문의{{i}}
+                                    {{item.title}}
                                 </v-expansion-panel-header>
-                                <v-expansion-panel-content>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                <v-expansion-panel-content v-html="item.content">
+                                    
                                 </v-expansion-panel-content>
                                 </v-expansion-panel>
                             </v-expansion-panels>
                         </v-col>
+                    </v-row>
+                    <v-row v-else>
+                        <v-card-text class="pl-12 pt-5">문의 요청이 없습니다.</v-card-text>
                     </v-row>
                 </v-card>
             </v-col>
@@ -54,7 +60,7 @@
                 <v-card class="mx-auto my-12" min-width="430" width="600">
                     <v-card-title>주문 정보</v-card-title>
                     <v-divider />
-                    <v-row>
+                    <v-row v-if="orderInfo.buyProduct">
                         <v-col cols="12">
                             <v-list>
                                 <v-list-item>
@@ -104,6 +110,9 @@
                             </v-list>
                         </v-col>
                     </v-row>
+                    <v-row v-else>
+                        <v-card-text class="pl-12 pt-5">주문 정보가 없습니다.</v-card-text>
+                    </v-row>
                     <div style="line-height:110%;">
                         <br><br>
                     </div>
@@ -113,7 +122,7 @@
                 <v-card class="mx-auto my-12 justify-center align-center" max-height="800" min-width="430" width="600">
                     <v-card-title>최근 본 상품</v-card-title>
                     <v-divider />
-                    <v-row class="pa-3">
+                    <v-row class="pa-3" v-if="viewProductList[0]">
                         <v-col cols="12" xl="3" lg="4" md="6" sm="6" xs="6" v-for=" (item,index) in viewProductList" :key="index">
                             <product-card :product="item"></product-card>
                         </v-col>
@@ -126,6 +135,9 @@
                         <v-col cols="12" xl="3" lg="4" md="6" sm="6" xs="6">
                             <product-card></product-card>
                         </v-col> -->
+                    </v-row>
+                    <v-row v-else>
+                        <v-card-text class="pl-12 pt-5">최근 본 상품이 없습니다.</v-card-text>
                     </v-row>
                 </v-card>
             </v-col>
@@ -159,21 +171,26 @@ interface Product {
       
       updatedAt: Date; 
       }
-
+interface Question {
+    title:string
+    content:string
+}
     @Component<MyPage>({
         components:{
             ProductCard
         },
         created() {
             this.getUser();
+            this.getQuestion();
         }
     })
     export default class MyPage extends Vue {
+        updateMode: boolean = false
         user= {}
         viewProductList: Array<Product> = []
         orderInfo= {}
         $axios: any;
-
+        questionList: Array<Question> = []
          numberComma( item:number ) {
                 let numberData = new Number( item )
             return numberData.toLocaleString('ko-KR')
@@ -183,8 +200,10 @@ interface Product {
             await this.$axios.get('/user/'+this.$store.state.user.id)
             .then( (r: AxiosResponse) => {
                 this.user = r.data.user
-                this.orderInfo = r.data.orderInfo
-                console.log(r.data);
+                if(r.data.orderInfo) {
+                    this.orderInfo = r.data.orderInfo
+                }
+                // console.log('akjsdhkjashdkajsdh',r.data);
                 for(let i=0 ; i<r.data.viewProductList.length ; i++) {
                     let search_char = r.data.user.viewRecentProduct[i]
                     r.data.viewProductList.forEach( (item: Product) => {
@@ -192,6 +211,19 @@ interface Product {
                             this.viewProductList.push(item);
                         }
                     });
+                }
+            })
+        }
+
+        async getQuestion() {
+            await this.$axios.get('/question/user/'+this.$store.state.user.id)
+            .then( (r: AxiosResponse) => {
+                if(r.data) {
+                    r.data.forEach( (item:string) => {
+                        const title = item.substring(0,item.indexOf('</h1>')+5).replace('<h1>','').replace('</h1>','')
+                        const content = item.split('</h1>')[1]
+                        this.questionList.push( {title , content})
+                    })
                 }
             })
         }

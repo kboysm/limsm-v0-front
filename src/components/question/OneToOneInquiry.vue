@@ -51,6 +51,10 @@
         content= "<h1>제목: </h1>"
         
         submit() {
+            if( !this.$store.state.user.id) {
+                alert('로그인해주세요')
+                return
+            }
             this.$axios.post(`/question/${this.product.id}/${this.$store.state.user.id}`,{content:this.content})
             .then(r => {
                 console.log(r)
