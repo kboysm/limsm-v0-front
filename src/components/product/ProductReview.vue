@@ -10,7 +10,7 @@
           cols="12"
         >
           <v-card
-            :color="item.color"
+            :color="color[i%2]"
             dark
           >
             <div class="d-flex flex-no-wrap justify-space-between">
@@ -20,18 +20,10 @@
                   v-text="item.title"
                 ></v-card-title>
 
-                <v-card-subtitle v-text="item.artist"></v-card-subtitle>
-
-                <v-card-actions>
-                  <v-btn
-                    class="ml-2 mt-5"
-                    outlined
-                    rounded
-                    small
-                  >
-                    후기보기
-                  </v-btn>
-                </v-card-actions>
+                <v-card-subtitle v-text="item.user.name"></v-card-subtitle>
+                <v-card-text>
+                  {{item.content}}
+                </v-card-text>
               </div>
 
               <v-avatar
@@ -39,7 +31,7 @@
                 size="125"
                 tile
               >
-                <v-img :src="item.src"></v-img>
+                <v-img :src="baseUrl + item.imgUrl"></v-img>
               </v-avatar>
             </div>
           </v-card>
@@ -50,24 +42,48 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
+    import { Component, Vue, Prop } from 'vue-property-decorator';
+    interface Product {
+      id: number; // pk
 
-    @Component
+      imgUrl: string; // 이미지
+
+      name: string; // 상품명
+
+      description: string; // 상품 설명
+
+      quantity: number; // 제품 수량
+      
+      grade: number; // 평점 총점
+      
+      salesQuantity: number; // 판매수량
+      
+      price: number; // 결제금액
+
+      createdAt: Date; //상품 등록일
+      
+      updatedAt: Date; 
+      }
+    @Component<ProductReview>({
+      created() {
+        this.getProductReview()
+      }
+    })
     export default class ProductReview extends Vue {
+              @Prop() product!: Product
+              color:Array<string> =   [ '#1F7087' , '#952175' ]
+              baseUrl = process.env.VUE_APP_BASE_URL
         items= [
-        {
-          color: '#1F7087',
-          src: process.env.VUE_APP_BASE_URL + 'img/0.PNG',
-          title: '컴퓨터 테스트1',
-          artist: 'Foster the People',
-        },
-        {
-          color: '#952175',
-          src: process.env.VUE_APP_BASE_URL + 'img/0.PNG',
-          title: '컴퓨터 테스트2',
-          artist: 'Ellie Goulding',
-        },
+        
       ]
+
+      getProductReview() {
+        this.$axios.get('/productList/'+ this.product.id)
+        .then( r => {
+          console.log(r.data)
+          this.items = r.data
+        })
+      }
     }
 </script>
 
