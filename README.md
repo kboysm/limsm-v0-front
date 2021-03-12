@@ -7,6 +7,9 @@ typescript와 vuejs class기반으로 프로젝트를 진행하기
 ## 프로젝트 목적   
 typescript를 활용 경험과 class 기반 vuejs 프로젝트의 경험, 간단하게라도 백엔드와 데이터베이스를 복습하고 배포
 
+## s3 버킷과 같은 스토리지가 존재 하지 않아 1:1문의 기능을 막아놓았습니다.
+로컬에서 돌려주세요
+
 ## 사용 기술 ( front )
  - typescript
  - vuejs ( class based )
