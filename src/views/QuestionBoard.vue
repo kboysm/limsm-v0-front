@@ -114,6 +114,10 @@
         }
 
         viewArticle( item: number) {
+            if( process.env.VUE_APP_BASE_URL !== 'http://localhost:3000/' ) {
+                alert('배포 서버에 스토리지가 존재 하지 않아 내용이 저장되지 않았습니다.')
+                return
+            }
             this.$axios.get(`/question/${item}`)
             .then( r => {
                 console.log(r.data)
