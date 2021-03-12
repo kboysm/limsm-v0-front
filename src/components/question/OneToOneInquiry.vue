@@ -51,6 +51,10 @@
         content= "<h1>제목: </h1>"
         
         submit() {
+            if( process.env.VUE_APP_BASE_URL !== 'http://localhost:3000/' ) {
+                alert('배포 서버에 스토리지가 존재 하지 않아 저장되지 않습니다.')
+                return
+            }
             if( !this.$store.state.user.id) {
                 alert('로그인해주세요')
                 return

@@ -90,7 +90,7 @@ export default class Home extends Vue {
   }
 
   async getCartList() {
-    await this.$axios.get("/carts/"+this.$store.state.user.carts.id )
+      await this.$axios.get("/carts/"+this.$store.state.user.carts.id )
       .then( (r: AxiosResponse) => {
         this.$store.dispatch('setCartList' , r.data[0].cartProduct);
       })
